@@ -5,8 +5,23 @@
     <title>はじめてのHTML</title>
 </head>
 <body>
+    <!--
+    div: 汎用ブロック要素 → 前後に改行が入る
+    span: 汎用インライン要素 → 入らない
+
+    id:文書の中にその要素が一つだけあるもの
+    class:文書の中に複数あるもの
+    -->
     <h1>大見出し</h1>
+    <p>こんにちは！こんにちは！<span class="point">こんにちは！</span>こんにちは！</p>
     <p>こんにちは！</p>
+    <p>こんにちは！</p>
+    
+    <div id="main">
+    <p>こんにちは！</p>
+    <p>こんにちは！<span class="point">こんにちは！</span></p>
+    <p>こんにちは！</p>
+    </div>
     <p>Google検索は<a href="http://google.com" target="_blank">こちらから</a></p>
     <a href="http://google.com" target="_blank"><img src="http://samples.dotinstall.com/basic_html/306/omlet.jpeg" width="180" height="240" alt="オムレツの画像です。"></a>
     <p>別のページは<a href="other.html">こちら</a>！</p>
