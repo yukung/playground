@@ -40,14 +40,14 @@
         <p>パスワード：<input type="password" name="password" size="20" maxlength="5" value="12345"></p>
         <p>メモ：<textarea name="memo" rows="5" cols="40">メモ</textarea></p>
         <p>ケータイ：
-            <input type="checkbox" name="mobile" value="1" checked>iPhone
-            <input type="checkbox" name="mobile" value="2">Android
-            <input type="checkbox" name="mobile" value="3">その他
+            <label><input type="checkbox" name="mobile" value="1" checked>iPhone</label>
+            <label><input type="checkbox" name="mobile" value="2">Android</label>
+            <label><input type="checkbox" name="mobile" value="3">その他</label>
         </p>
         <p>性別：
-            <input type="radio" name="sex" value="1" checked>男性
-            <input type="radio" name="sex" value="2">女性
-            <input type="radio" name="sex" value="3">その他
+            <input type="radio" name="sex" value="1" id="male" checked><label for="male">男性</label>
+            <input type="radio" name="sex" value="2" id="female"><label for="female">女性</label>
+            <input type="radio" name="sex" value="3" id="other"><label for="other">その他</label>
         </p>
         <p>言語：
             <select name="language" size="4" multiple>
