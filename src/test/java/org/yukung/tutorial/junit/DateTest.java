@@ -2,6 +2,7 @@ package org.yukung.tutorial.junit;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import static org.yukung.tutorial.junit.IsDate.*;
 
 import java.util.Date;
 
@@ -21,7 +22,7 @@ public class DateTest {
 
 	@Test
 	public void testDate() {
-		assertThat(new Date(), is(IsDate.dateOf(2012, 1, 12)));
+		assertThat(new Date(), is(dateOf(2012, 1, 12)));
 	}
 
 }
