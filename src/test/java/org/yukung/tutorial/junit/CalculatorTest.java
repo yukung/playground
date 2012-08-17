@@ -32,4 +32,12 @@ public class CalculatorTest {
 		int actual = calc.multiply(5, 7);
 		assertThat(actual, is(expected));
 	}
+
+	@Test
+	public void devideで3と2の除算結果が取得できる() throws Exception {
+		Calculator calc = new Calculator();
+		float expected = 1.5f;
+		float actual = calc.divide(3, 2);
+		assertThat(actual, is(expected));
+	}
 }
