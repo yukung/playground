@@ -26,7 +26,7 @@ public class CalculatorTest {
 	}
 
 	@Test
-	public void multiplyで5と7の乗算結果が取得できる() throws Exception {
+	public void multiplyで5と7の乗算結果が取得できる() {
 		Calculator calc = new Calculator();
 		int expected = 35;
 		int actual = calc.multiply(5, 7);
@@ -34,7 +34,7 @@ public class CalculatorTest {
 	}
 
 	@Test
-	public void devideで3と2の除算結果が取得できる() throws Exception {
+	public void devideで3と2の除算結果が取得できる() {
 		Calculator calc = new Calculator();
 		float expected = 1.5f;
 		float actual = calc.divide(3, 2);
@@ -42,7 +42,7 @@ public class CalculatorTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void divideの第2引数に0を指定した場合にはIllegalArgumentExceptionを送出する() throws Exception {
+	public void divideの第2引数に0を指定した場合にはIllegalArgumentExceptionを送出する() {
 		Calculator calc = new Calculator();
 		calc.divide(5, 0);
 	}
