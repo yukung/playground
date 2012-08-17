@@ -40,4 +40,10 @@ public class CalculatorTest {
 		float actual = calc.divide(3, 2);
 		assertThat(actual, is(expected));
 	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void divideの第2引数に0を指定した場合にはIllegalArgumentExceptionを送出する() throws Exception {
+		Calculator calc = new Calculator();
+		calc.divide(5, 0);
+	}
 }
