@@ -3,8 +3,8 @@ package org.yukung.tutorial.junit;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
+import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -15,39 +15,61 @@ public class CalculatorTest {
 	@RunWith(Theories.class)
 	public static class 乗算メソッドのパラメータ化テスト {
 
-		@Theory
-		public void multiplyで3と4の乗算結果が取得できる() {
-			Calculator calc = new Calculator();
-			int expected = 12;
-			int actual = calc.multiply(3, 4);
-			assertThat(actual, is(expected));
-		}
+		@DataPoint
+		public static Fixture DATA1 = new Fixture(3, 4, 12);
+		@DataPoint
+		public static Fixture DATA2 = new Fixture(5, 7, 35);
 
 		@Theory
-		public void multiplyで5と7の乗算結果が取得できる() {
+		public void multiplyで乗算結果が取得できること(Fixture fx) {
+			String msg = fx.x + "*" + fx.y + "=" + fx.expected;
 			Calculator calc = new Calculator();
-			int expected = 35;
-			int actual = calc.multiply(5, 7);
-			assertThat(actual, is(expected));
+			int expected = fx.expected;
+			int actual = calc.multiply(fx.x, fx.y);
+			assertThat(msg, actual, is(expected));
+		}
+
+		static class Fixture {
+			int x, y, expected;
+
+			Fixture(int x, int y, int expected) {
+				this.x = x;
+				this.y = y;
+				this.expected = expected;
+			}
 		}
 
 	}
 
 	@RunWith(Theories.class)
 	public static class 除算メソッドのパラメータ化テスト {
+		@DataPoint
+		public static Fixture DATA1 = new Fixture(3, 2, 1.5f);
+		@DataPoint
+		public static Fixture DATA2 = new Fixture(5, 0, 0.0f);
 
 		@Theory
-		public void devideで3と2の除算結果が取得できる() {
+		public void devideで除算結果が取得できること(Fixture fx) {
+			String msg = fx.x + "/" + fx.y + "=" + fx.expected;
 			Calculator calc = new Calculator();
-			float expected = 1.5f;
-			float actual = calc.divide(3, 2);
-			assertThat(actual, is(expected));
+			float expected = fx.expected;
+			try {
+				float actual = calc.divide(fx.x, fx.y);
+				assertThat(msg, actual, is(expected));
+			} catch (IllegalArgumentException e) {
+				assertThat(msg, e, is(IllegalArgumentException.class));
+			}
 		}
 
-		@Test(expected = IllegalArgumentException.class)
-		public void divideの第2引数に0を指定した場合にはIllegalArgumentExceptionを送出する() {
-			Calculator calc = new Calculator();
-			calc.divide(5, 0);
+		static class Fixture {
+			int x, y;
+			float expected;
+
+			Fixture(int x, int y, float expected) {
+				this.x = x;
+				this.y = y;
+				this.expected = expected;
+			}
 		}
 	}
 
