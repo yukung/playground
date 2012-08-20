@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import org.junit.experimental.runners.Enclosed;
-import org.junit.experimental.theories.DataPoint;
+import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -14,11 +14,8 @@ public class CalculatorTest {
 
 	@RunWith(Theories.class)
 	public static class 乗算メソッドのパラメータ化テスト {
-
-		@DataPoint
-		public static Fixture DATA1 = new Fixture(3, 4, 12);
-		@DataPoint
-		public static Fixture DATA2 = new Fixture(5, 7, 35);
+		@DataPoints
+		public static Fixture[] DATAS = { new Fixture(3, 4, 12), new Fixture(5, 7, 35), };
 
 		@Theory
 		public void multiplyで乗算結果が取得できること(Fixture fx) {
@@ -43,10 +40,8 @@ public class CalculatorTest {
 
 	@RunWith(Theories.class)
 	public static class 除算メソッドのパラメータ化テスト {
-		@DataPoint
-		public static Fixture DATA1 = new Fixture(3, 2, 1.5f);
-		@DataPoint
-		public static Fixture DATA2 = new Fixture(5, 0, 0.0f);
+		@DataPoints
+		public static Fixture[] DATAS = { new Fixture(3, 2, 1.5f), new Fixture(5, 0, 0.0f), };
 
 		@Theory
 		public void devideで除算結果が取得できること(Fixture fx) {
