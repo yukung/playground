@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 
 /*
  * JUnit4 でテストケースの構造化をする例。Enclosed テストランナーを使用して、
- * nested class ごとにテストを分ける例。
+ * Static Nested Class ごとにテストを分ける例。
  */
 @RunWith(Enclosed.class)
 public class ArrayListTest {
