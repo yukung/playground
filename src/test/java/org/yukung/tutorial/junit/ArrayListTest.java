@@ -10,6 +10,10 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+/*
+ * JUnit4 でテストケースの構造化をする例。Enclosed テストランナーを使用して、
+ * nested class ごとにテストを分ける例。
+ */
 @RunWith(Enclosed.class)
 public class ArrayListTest {
 	public static class 初期状態の時 {
