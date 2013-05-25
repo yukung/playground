@@ -1,0 +1,9 @@
+p {
+    font-size: 14px;
+}
+
+#box1 {
+    background-color: red;
+    width: 50%;
+    height: 50px;
+}
