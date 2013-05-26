@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>CSS3の勉強</title>
+    <style>
+        div {
+            width: 50px;
+            height: 50px;
+            padding: 10px;
+            margin: 30px;
+            background-color:orange;
+            border:2px solid orangered;
+        }
+        #test2 {
+            -webkit-transform-origin:0 0;
+            /*
+            -webkit-transform:scale(1.2,1.5);
+            -webkit-transform:scaleX(1.2);
+            -webkit-transform:scaleY(1.2);
+            */
+            -webkit-transform:scale3d(1.2,1.5,1.7);
+        }
+    </style>
+</head>
+<body>
+    <div id="test1">test1</div>
+    <div id="test2">test2</div>
+</body>
+</html>
+
