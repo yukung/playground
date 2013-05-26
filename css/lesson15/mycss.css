@@ -1,0 +1,8 @@
+p {
+    font-size: 14px;
+}
+
+.change {
+    cursor: wait; /* move; help; pointer; */
+}
+
