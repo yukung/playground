@@ -1,0 +1,27 @@
+p {
+    font-size: 14px;
+}
+
+/* position: static, relative, absolute, fixed */
+
+#id3 {
+    position: relative;
+    left: 30px;
+    top: 30px;
+}
+
+#id2 {
+    position: relative;
+}
+
+#free {
+    position: absolute;
+    top: -10px;
+    left: 50px;
+}
+
+#id1 {
+    position: fixed;
+    bottom: 0;
+}
+
