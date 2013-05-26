@@ -1,0 +1,18 @@
+p {
+    font-size: 14px;
+}
+
+/* 擬似クラス */
+
+.person:hover {
+    color: red;
+}
+
+li:last-child {
+    color: green;
+}
+
+#onamae:focus {
+    font-weight:bold;
+}
+
