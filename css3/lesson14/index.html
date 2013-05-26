@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>CSS3の勉強</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            padding: 10px;
+            margin: 30px;
+            background-color:orange;
+            border:2px solid orangered;
+            /*
+            animation-name:
+            animation-duration:
+            animation-timing-function:
+            animation-delay:
+            animation-iteration-count:
+            animation-direction:
+            */
+            -webkit-animation: animationTest 5s ease 1s infinite alternate;
+        }
+        @-webkit-keyframes animationTest {
+            0% { width: 50px; background: orange; }
+            50% { width: 100px; background: blue; }
+            100% { width: 150px; background: yellow; }
+        }
+    </style>
+</head>
+<body>
+    <div id="test1">test1</div>
+</body>
+</html>
+
