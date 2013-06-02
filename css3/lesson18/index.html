@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>CSS3の勉強</title>
+    <style>
+        /*
+        input[type="text"]:disabled {
+            font-weight:bold;
+        }
+        input[type="text"]:enabled {
+            border:1px solid red;
+        }
+        */
+        input[type="radio"]:checked + label {
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>大見出し</h1>
+    <p>UserName: <input type="text" name="user_name" value="taguchi" disabled></p>
+    <p>Email: <input type="text" name="email"></p>
+    <p>
+    <input type="radio" name="opt1" value="1"> <label>iPhone</label>
+    <input type="radio" name="opt1" value="2"> <label>Android</label>
+    </p>
+</div>
+</body>
+</html>
+
