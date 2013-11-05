@@ -1,0 +1,19 @@
+diff --git bin/standalone.conf bin/standalone.conf
+index 414560c..1f7e631 100644
+--- bin/standalone.conf
++++ bin/standalone.conf
+@@ -47,8 +47,12 @@ fi
+ # Specify options to pass to the Java VM.
+ #
+ if [ "x$JAVA_OPTS" = "x" ]; then
+-   JAVA_OPTS="-Xms64m -Xmx512m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true -Dorg.jboss.resolver.warning=true -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000"
+-   JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=$JBOSS_MODULES_SYSTEM_PKGS -Djava.awt.headless=true"
++   JAVA_OPTS="-Xms64m -Xmx512m -XX:MaxPermSize=256m -Xss512k"
++   JAVA_OPTS="$JAVA_OPTS -Xverify:none -XX:+TieredCompilation -XX:+UseFastAccessorMethods -XX:+UseConcMarkSweepGC -XX:+UseCompressedOops"
++#   JAVA_OPTS="$JAVA_OPTS -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintClassHistogram -XX:+HeapDumpOnOutOfMemoryError"
++   JAVA_OPTS="$JAVA_OPTS -Djava.net.preferIPv4Stack=true -Dorg.jboss.resolver.warning=true -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000"
++   JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman"
++#   JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=$JBOSS_MODULES_SYSTEM_PKGS -Djava.awt.headless=true"
+    JAVA_OPTS="$JAVA_OPTS -Djboss.server.default.config=standalone.xml"
+ else
+    echo "JAVA_OPTS already set in environment; overriding default settings with values: $JAVA_OPTS"
