@@ -1,8 +1,8 @@
-  ~/jboss7/bin/jboss-cli.sh -c --command=":shutdown"
-  ~/jboss7/bin/standalone.sh 
-  rm ~/jboss7/standalone/deployments/javaee6-0.0.1-SNAPSHOT.war
-  ~/jboss7/bin/jboss-cli.sh -c --command="undeploy javaee6-0.0.1-SNAPSHOT.war"
-  ~/jboss7/bin/jboss-cli.sh -c --command="deploy ~/Documents/src/javaee6/target/javaee6-0.0.1-SNAPSHOT.war"
-  ~/jboss7/bin/jboss-cli.sh -c --command="add-data-source --jndi-name=H2DS --driver-name=h2 --pool-name=H2DS_pool --connection-url=jdbc:h2:mem:h2ds --username=sa --password=sa"
-  ~/jboss7/bin/add-user.sh 
-  ~/jboss7/bin/jboss-cli.sh -c --command=":shutdown"
+~/jboss7/bin/jboss-cli.sh -c --command=":shutdown"
+~/jboss7/bin/standalone.sh
+rm ~/jboss7/standalone/deployments/javaee6-0.0.1-SNAPSHOT.war
+~/jboss7/bin/jboss-cli.sh -c --command="undeploy javaee6-0.0.1-SNAPSHOT.war"
+~/jboss7/bin/jboss-cli.sh -c --command="deploy ~/git/javaee6-tutorial-with-jbossas7/target/javaee6-0.0.1-SNAPSHOT.war"
+~/jboss7/bin/jboss-cli.sh -c --command="add-data-source --jndi-name=H2DS --driver-name=h2 --pool-name=H2DS_pool --connection-url=jdbc:h2:mem:h2ds --username=sa --password=sa"
+~/jboss7/bin/add-user.sh
+~/jboss7/bin/jboss-cli.sh -c --command=":shutdown"

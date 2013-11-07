@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3c.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html">
+	<h:head>
+		<title>Register a new book</title>
+	</h:head>
+	<h:body>
+		<h1>Register a new book</h1>
+		<h:form>
+			<h:panelGrid columns="2">
+				<h:outputLabel value="Title :" />
+				<h:inputText value="#{bookController.book.title}" />
+				<h:outputLabel value="Description :" />
+				<h:inputTextarea value="#{bookController.book.description}" rows="5" cols="20" />
+			</h:panelGrid>
+			<h:commandButton value="Register" action="#{bookController.registerBookAction}" />
+		</h:form>
+	</h:body>
+</html>
