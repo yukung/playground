@@ -3,7 +3,7 @@
 
 	<groupId>org.yukung</groupId>
 	<artifactId>javaee6</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>javaee6</name>
