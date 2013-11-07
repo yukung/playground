@@ -5,12 +5,12 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.inject.Model;
 
 import org.yukung.domain.Book;
 import org.yukung.service.BookService;
 
-@ManagedBean
+@Model
 public class BookController {
 	@EJB
 	private BookService bookService;

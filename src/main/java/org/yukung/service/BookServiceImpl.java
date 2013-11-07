@@ -4,26 +4,24 @@ import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.inject.Inject;
 
 import org.yukung.domain.Book;
+import org.yukung.repository.BookRepository;
 
 @Stateless
 @Local(BookService.class)
 public class BookServiceImpl implements BookService {
-	@PersistenceContext(unitName = "javaee6PU")
-	private EntityManager em;
+	@Inject
+	private BookRepository bookRepository;
 
 	@Override
 	public List<Book> findAll() {
-		TypedQuery<Book> query = em.createQuery("SELECT b from Book b", Book.class);
-		return query.getResultList();
+		return bookRepository.findAll();
 	}
 	@Override
 	public Book create(Book book) {
-		em.persist(book);
+		bookRepository.persist(book);
 		return book;
 	}
 }
