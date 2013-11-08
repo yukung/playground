@@ -72,6 +72,12 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.0</version>
 			</plugin>
+			<!-- JBoss AS への Maven からのデプロイをサポートする -->
+			<plugin>
+				<groupId>org.jboss.as.plugins</groupId>
+				<artifactId>jboss-as-maven-plugin</artifactId>
+				<version>7.1.1.Final</version>
+			</plugin>
 		</plugins>
 	</build>
 </project>
