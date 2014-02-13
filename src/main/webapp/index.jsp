@@ -11,7 +11,7 @@
 		<title>Welcome</title>
 	</head> 
 	<body>
-		<c:url value="/showMessage.html" var="messageUrl" />
-		<a href="${messageUrl}">Click to enter</a>
+		<c:set var="message" value="Hello, Spring!" />
+		<h1><c:out value="${message}" /></h1>
 	</body>
 </html>
