@@ -7,7 +7,7 @@ INSERT INTO `events` VALUES ('40', 'Intelligent Content Conference 2013', '2013-
 INSERT INTO `events` VALUES ('41', 'Refresh Teesside February', '2013-02-07 16:00:00', '2013-02-07 19:00:00');
 INSERT INTO `events` VALUES ('43', 'Digital Media Strategies 2013', '2013-02-19 14:00:00', '2013-02-20 19:00:00');
 INSERT INTO `events` VALUES ('44', 'ZendFrameworkDay', '2013-02-01 09:00:00', '2013-02-01 16:40:00');
-INSERT INTO `events` VALUES ('45', "Tomorrow's Web", '2013-02-02 13:00:00', '2013-02-02 18:00:00');
+INSERT INTO `events` VALUES ('45', 'Tomorrows Web', '2013-02-02 13:00:00', '2013-02-02 18:00:00');
 INSERT INTO `events` VALUES ('46', 'Webstock 2013', '2013-02-11 09:00:00', '2013-02-15 18:00:00');
 INSERT INTO `events` VALUES ('47', 'Training: Build your first Mobile App with HTML5 and a Backend-as-a-Service', '2013-02-09 09:00:00', '2013-02-09 18:30:00');
 INSERT INTO `events` VALUES ('48', 'Online Northwest', '2013-02-08 10:00:00', '2013-02-08 14:30:00');
