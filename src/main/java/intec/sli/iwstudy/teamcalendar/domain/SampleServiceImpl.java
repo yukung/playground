@@ -20,11 +20,13 @@ public class SampleServiceImpl implements SampleService {
 	
 	@Override
 	public void print(String id) {
-		Event event = mapper.findById(id);
-		System.out.println(event.getId());
-		System.out.println(event.getText());
-		System.out.println(new DateTime(event.getFrom()));
-		System.out.println(new DateTime(event.getTo()));
+		Event event = mapper.findById(Integer.valueOf(id));
+		if (event != null) {
+			System.out.println(event.getId());
+			System.out.println(event.getText());
+			System.out.println(new DateTime(event.getFrom()));
+			System.out.println(new DateTime(event.getTo()));
+		}
 	}
 	
 	@Transactional
@@ -50,4 +52,20 @@ public class SampleServiceImpl implements SampleService {
 		}
 	}
 	
+	@Transactional
+	@Override
+	public int update(String id) {
+		Event event = mapper.findById(Integer.valueOf(id));
+		event.setText("更新したよ");
+		int result = mapper.update(event);
+		return result;
+	}
+	
+	@Transactional
+	@Override
+	public int delete(String id) {
+		Event event = mapper.findById(Integer.valueOf(id));
+		int result = mapper.delete(event);
+		return result;
+	}
 }

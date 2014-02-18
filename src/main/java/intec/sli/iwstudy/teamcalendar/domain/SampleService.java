@@ -7,4 +7,8 @@ public interface SampleService {
 	int insert();
 	
 	void printAll();
+	
+	int update(String id);
+	
+	int delete(String id);
 }
