@@ -23,8 +23,8 @@ public class SampleServiceImpl implements SampleService {
 		for (Event event : events) {
 			System.out.println(event.getId());
 			System.out.println(event.getText());
-			System.out.println(new DateTime(event.getStartDate()));
-			System.out.println(new DateTime(event.getEndDate()));
+			System.out.println(new DateTime(event.getFrom()));
+			System.out.println(new DateTime(event.getTo()));
 		}
 	}
 	

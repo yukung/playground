@@ -6,9 +6,9 @@ public class Event {
 	
 	private Integer id;
 	
-	private Date startDate;
+	private Date from;
 	
-	private Date endDate;
+	private Date to;
 	
 	private String text;
 	
@@ -21,20 +21,20 @@ public class Event {
 		this.id = id;
 	}
 	
-	public Date getStartDate() {
-		return startDate;
+	public Date getFrom() {
+		return from;
 	}
 	
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public void setFrom(Date from) {
+		this.from = from;
 	}
 	
-	public Date getEndDate() {
-		return endDate;
+	public Date getTo() {
+		return to;
 	}
 	
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setTo(Date to) {
+		this.to = to;
 	}
 	
 	public String getText() {
