@@ -8,7 +8,10 @@ public class Application {
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("spring/applicationContext.xml");
 		SampleService service = context.getBean(SampleService.class);
-		service.print("45");
+		service.printAll();
+		int generatedId = service.insert();
+		System.out.println("--- 自動採番されたIDでイベントを１つ取得するよ ---");
+		service.print(String.valueOf(generatedId));
 	}
 	
 }
