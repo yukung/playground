@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-    
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Welcome</title>
-	</head> 
-	<body>
-		<c:set var="message" value="Hello, Spring!" />
-		<h1><c:out value="${message}" /></h1>
-	</body>
+<head>
+<meta charset="utf-8">
+<title>Welcome</title>
+</head>
+<body>
+	<c:set var="message" value="Hello, Spring!" />
+	<h1>
+		<c:out value="${message}" />
+	</h1>
+</body>
 </html>

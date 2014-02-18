@@ -14,57 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package intec.sli.iwstudy.teamcalendar.domain.model;
+package intec.sli.iwstudy.teamcalendar.domain.service;
 
-import java.util.Date;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
-public class Event {
+public class DataNotFoundException extends ServiceException {
 	
-	private Integer id;
+	private static final long serialVersionUID = -5001865138104363666L;
 	
-	private Date from;
-	
-	private Date to;
-	
-	private String text;
-	
-	public Integer getId() {
-		return id;
+	public DataNotFoundException() {
 	}
 	
-	public void setId(Integer id) {
-		this.id = id;
+	public DataNotFoundException(String message) {
+		super(message);
 	}
 	
-	public Date getFrom() {
-		return from;
+	public DataNotFoundException(Throwable cause) {
+		super(cause);
 	}
 	
-	public void setFrom(Date from) {
-		this.from = from;
+	public DataNotFoundException(String message, Throwable cause) {
+		super(message, cause);
 	}
-	
-	public Date getTo() {
-		return to;
-	}
-	
-	public void setTo(Date to) {
-		this.to = to;
-	}
-	
-	public String getText() {
-		return text;
-	}
-	
-	public void setText(String text) {
-		this.text = text;
-	}
-	
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
-	
 }
