@@ -17,8 +17,7 @@
 package intec.sli.iwstudy.teamcalendar.domain.service.event;
 
 import intec.sli.iwstudy.teamcalendar.domain.model.Event;
-import intec.sli.iwstudy.teamcalendar.domain.repository.event.EventMapper;
-import intec.sli.iwstudy.teamcalendar.domain.service.DataNotFoundException;
+import intec.sli.iwstudy.teamcalendar.infrastructure.mybatis.EventRepository;
 
 import java.util.List;
 
@@ -28,21 +27,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Event サービスの実装クラス。
+ * 
+ * @author yukung
+ *
+ */
 @Service
 public class EventServiceImpl implements EventService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(EventServiceImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(EventServiceImpl.class);
 	
 	@Autowired
-	private EventMapper eventMapper;
+	private EventRepository eventRepository;
 	
 	@Override
 	public List<Event> list() {
-		List<Event> events = eventMapper.findAll();
-		if (events == null) {
-			throw new DataNotFoundException();
-		}
-		return events;
+		return eventRepository.findAll();
 	}
 	
 	@Transactional
@@ -51,8 +52,8 @@ public class EventServiceImpl implements EventService {
 		if (event == null || event.getFrom() == null || event.getTo() == null || event.getText() == null) {
 			throw new IllegalArgumentException();
 		}
-		eventMapper.insert(event);
-		logger.info("Create event. ID is {}.", event.getId());
+		eventRepository.persist(event);
+		LOG.info("Create event. ID is {}.", event.getId());
 		return event.getId();
 	}
 	
@@ -65,20 +66,19 @@ public class EventServiceImpl implements EventService {
 		if (event.getFrom() == null && event.getTo() == null && event.getText() == null) {
 			throw new IllegalArgumentException();
 		}
-		int count = eventMapper.update(event);
-		logger.info("Update event. Parameter value is {}.", event);
-		return count == 1;
+		Event persisted = eventRepository.persist(event);
+		LOG.info("Update event. Parameter value is {}.", event);
+		return persisted != null ? true : false;
 	}
 	
 	@Transactional
 	@Override
-	public boolean delete(Event event) {
+	public void delete(Event event) {
 		if (event == null || event.getId() == null) {
 			throw new IllegalArgumentException();
 		}
-		int count = eventMapper.delete(event);
-		logger.info("Delete event. ID is {}.", event.getId());
-		return count == 1;
+		eventRepository.remove(event);
+		LOG.info("Delete event. ID is {}.", event.getId());
 	}
 	
 }

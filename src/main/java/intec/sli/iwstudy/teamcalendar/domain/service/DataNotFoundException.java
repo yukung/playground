@@ -16,21 +16,46 @@
  */
 package intec.sli.iwstudy.teamcalendar.domain.service;
 
+/**
+ * サービス実行において存在しないデータに到達した場合の例外クラス。
+ * 
+ * @author yukung
+ *
+ */
 public class DataNotFoundException extends ServiceException {
 	
 	private static final long serialVersionUID = -5001865138104363666L;
 	
+	/**
+	 * デフォルトコンストラクタ。
+	 */
 	public DataNotFoundException() {
 	}
 	
+	/**
+	 * メッセージ付きのコンストラクタ。
+	 * 
+	 * @param message メッセージ
+	 */
 	public DataNotFoundException(String message) {
 		super(message);
 	}
 	
+	/**
+	 * 例外原因付きのコンストラクタ。
+	 * 
+	 * @param cause 原因
+	 */
 	public DataNotFoundException(Throwable cause) {
 		super(cause);
 	}
 	
+	/**
+	 * メッセージと例外原因付きのコンストラクタ。
+	 * 
+	 * @param message メッセージ
+	 * @param cause 原因
+	 */
 	public DataNotFoundException(String message, Throwable cause) {
 		super(message, cause);
 	}

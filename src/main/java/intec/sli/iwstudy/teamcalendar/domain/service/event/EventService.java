@@ -20,14 +20,41 @@ import intec.sli.iwstudy.teamcalendar.domain.model.Event;
 
 import java.util.List;
 
+/**
+ * Event にまつわる業務処理を司るサービスインターフェースです。
+ * 
+ * @author yukung
+ *
+ */
 public interface EventService {
 	
+	/**
+	 * 全ての Event を取得します。
+	 * 
+	 * @return 全ての Event のリスト
+	 */
 	List<Event> list();
 	
+	/**
+	 * Event を新規作成します。
+	 * 
+	 * @param event Event オブジェクト
+	 * @return 作成された Event の ID
+	 */
 	int create(Event event);
 	
+	/**
+	 * Event の内容を更新します。
+	 * 
+	 * @param event Event オブジェクト
+	 * @return 更新が成功した場合は true, 失敗した場合は false
+	 */
 	boolean update(Event event);
 	
-	boolean delete(Event event);
+	/**
+	 * Event を削除します。
+	 * @param event Event オブジェクト
+	 */
+	void delete(Event event);
 	
 }

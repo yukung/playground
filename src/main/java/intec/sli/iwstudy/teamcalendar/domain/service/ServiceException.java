@@ -16,21 +16,48 @@
  */
 package intec.sli.iwstudy.teamcalendar.domain.service;
 
+/**
+ * サービス実行時の例外クラス。
+ * 
+ * <p>詳細な原因が区別できる場合は、このクラスを継承しより具体的な例外クラスを作成すること。
+ * 
+ * @author yukung
+ *
+ */
 public class ServiceException extends RuntimeException {
 	
 	private static final long serialVersionUID = 8696329535430941287L;
 	
+	/**
+	 * デフォルトコンストラクタ。
+	 */
 	public ServiceException() {
 	}
 	
+	/**
+	 * メッセージ付きのコンストラクタ。
+	 * 
+	 * @param message メッセージ
+	 */
 	public ServiceException(String message) {
 		super(message);
 	}
 	
+	/**
+	 * 例外原因付きのコンストラクタ。
+	 * 
+	 * @param cause 原因
+	 */
 	public ServiceException(Throwable cause) {
 		super(cause);
 	}
 	
+	/**
+	 * メッセージと例外原因付きのコンストラクタ。
+	 * 
+	 * @param message メッセージ
+	 * @param cause 原因
+	 */
 	public ServiceException(String message, Throwable cause) {
 		super(message, cause);
 	}

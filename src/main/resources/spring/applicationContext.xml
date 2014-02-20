@@ -26,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
 	<!-- TODO 全体的に xml が fat になってきたら分割を考える -->
-	<context:component-scan base-package="intec.sli.iwstudy.teamcalendar.domain" />
+	<context:component-scan base-package="intec.sli.iwstudy.teamcalendar" />
 
 	<!-- domain -->
 	<!-- Declarative transaction management by annotation-driven. -->
@@ -48,16 +48,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	<!-- TODO ここは Mapper が増えてきたらパッケージスキャンに変える -->
 	<bean id="eventMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
 		<property name="mapperInterface"
-			value="intec.sli.iwstudy.teamcalendar.domain.repository.event.EventMapper" />
+			value="intec.sli.iwstudy.teamcalendar.infrastructure.mybatis.EventMapper" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
 
 	<!-- environment -->
-	<!-- The settting of embedded DB for development. -->
-	<jdbc:embedded-database id="dataSource" type="H2">
-		<jdbc:script location="classpath:script/schema.ddl" />
-		<jdbc:script location="classpath:script/initialize.sql" />
-	</jdbc:embedded-database>
-	<!-- TODO 実データベース使う場合は、jdbc.properties から datasource を構成するように切り出し -->
+	<beans profile="development">
+		<!-- TODO 実データベース使う場合は、jdbc.properties から datasource を構成するように切り出し -->
+		<!-- TODO ServletListener にフックして、H2 Database を Server mode で起動するように変更 -->
+		<jdbc:embedded-database id="dataSource" type="H2">
+			<jdbc:script location="classpath:script/schema.ddl" />
+			<jdbc:script location="classpath:script/initialize.sql" />
+		</jdbc:embedded-database>
+	</beans>
 
 </beans>

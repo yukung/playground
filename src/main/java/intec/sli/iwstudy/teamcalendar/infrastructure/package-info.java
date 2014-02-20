@@ -14,30 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package intec.sli.iwstudy.teamcalendar.domain.repository.event;
-
-import intec.sli.iwstudy.teamcalendar.domain.model.Event;
-
-import org.apache.ibatis.jdbc.SQL;
-
-public class EventSqlProvider {
-	
-	public String updateEvent(final Event event) {
-		return new SQL() {
-			
-			{
-				UPDATE("events");
-				if (event.getFrom() != null) {
-					SET("start_date = #{from}");
-				}
-				if (event.getTo() != null) {
-					SET("end_date = #{to}");
-				}
-				if (event.getText() != null) {
-					SET("event_name = #{text}");
-				}
-				WHERE("event_id = #{id}");
-			}
-		}.toString();
-	}
-}
+/**
+ * Repository から利用される、Infrastructure 層のサービスを提供するクラスが
+ * 収められたパッケージです。
+ * 
+ * <p>Infrastructure 層は、データベースやネットワーク、ファイルなど物理的な
+ * ミドルウェアや外部リソースに対してアクセスするための具体的な手段を実装して
+ * Repository 層に提供します。
+ */
+package intec.sli.iwstudy.teamcalendar.infrastructure;
