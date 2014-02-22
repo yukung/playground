@@ -8,4 +8,4 @@ About
 -----
 TBD
 
-[GPL License]: https://intec.backlog.jp/git/IWSTUDY/team-calendar/tree/master/LICENSE.txt
+[GPL License]: https://intec.backlog.jp/git/IWSTUDY/team-calendar/blob/master/LICENSE.txt
