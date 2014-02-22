@@ -55,6 +55,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		<joda-time.version>2.3</joda-time.version>
 		<joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
 		<commons-lang.version>3.2.1</commons-lang.version>
+		<com.google.guava.version>16.0.1</com.google.guava.version>
+		<dozer.version>5.4.0</dozer.version>
 
 		<!-- Test -->
 		<junit.version>4.11</junit.version>
@@ -177,6 +179,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons-lang.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${com.google.guava.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+			<version>${dozer.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>jcl-over-slf4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 		<!-- Calendar Framework with JavaPlanner -->
 		<dependency>
@@ -235,6 +261,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>src/main/webapp/WEB-INF/lib</outputDirectory>
+							<includeScope>system</includeScope>
+							<overWriteIfNewer>true</overWriteIfNewer>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<!-- web.xml is not mandatory since JavaEE 5 -->
@@ -242,6 +288,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				</configuration>
 			</plugin>
 		</plugins>
-
+		<pluginManagement>
+			<plugins>
+				<!-- This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-dependency-plugin</artifactId>
+										<versionRange>[2.1,)</versionRange>
+										<goals>
+											<goal>copy-dependencies</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 </project>

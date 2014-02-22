@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * Repository から利用される、Infrastructure 層のサービスを提供するクラスが
+ * アプリケーション層において、Webアプリケーション固有の処理を提供するクラスが
  * 収められたパッケージです。
  * 
- * <p>Infrastructure 層は、データベースやネットワーク、ファイルなど物理的な
- * ミドルウェアや外部リソースに対してアクセスするための具体的な手段を実装して
- * Repository 層に提供します。
+ * HTTPリクエスト及びレスポンスをハンドリングするコントローラ、及びUIで必要な処理を
+ * サービスとして提供します。
  * 
  * @author yukung
+ *
  */
-package intec.sli.iwstudy.teamcalendar.infrastructure;
+package intec.sli.iwstudy.teamcalendar.app.web;

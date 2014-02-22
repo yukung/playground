@@ -94,11 +94,11 @@ public class EventMapperTest extends InfrastructureTestBase {
 		int count = sut.insert(event);
 		assertThat(count, is(1));
 		// MyBatis で auto increment 値を Entity に入れてくれているはず
-		assertThat(event.getId(), is(76));
+		assertThat(event.getId(), is(greaterThan(75)));
 		
 		// 改めて取り直す
-		Event refetch = sut.findById(76);
-		assertThat(refetch.getId(), is(76));
+		Event refetch = sut.findById(event.getId());
+		assertThat(refetch.getId(), is(greaterThan(75)));
 		assertThat(refetch.getText(), is("２バイト文字も入るはず"));
 		assertThat(refetch.getFrom(), is(equalTo(from)));
 		assertThat(refetch.getTo(), is(equalTo(to)));

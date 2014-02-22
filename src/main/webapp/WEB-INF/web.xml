@@ -31,6 +31,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath*:spring/applicationContext.xml</param-value>
 	</context-param>
+	<context-param>
+		<param-name>spring.profiles.active</param-name>
+		<param-value>development</param-value>
+	</context-param>
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

@@ -26,7 +26,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
 	<!-- TODO 全体的に xml が fat になってきたら分割を考える -->
-	<context:component-scan base-package="intec.sli.iwstudy.teamcalendar" />
+	<context:component-scan
+		base-package="intec.sli.iwstudy.teamcalendar.domain, intec.sli.iwstudy.teamcalendar.infrastructure" />
+
+	<!-- application -->
+	<!-- Definition for DXO using Dozer -->
+	<bean class="org.dozer.spring.DozerBeanMapperFactoryBean">
+		<property name="mappingFiles" value="classpath:dozer/event-mapping.xml" />
+	</bean>
+	<bean class="intec.sli.iwstudy.teamcalendar.app.web.service.CustomEventsManager" autowire="constructor" />
 
 	<!-- domain -->
 	<!-- Declarative transaction management by annotation-driven. -->
