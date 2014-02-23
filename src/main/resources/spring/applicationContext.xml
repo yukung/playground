@@ -34,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	<bean class="org.dozer.spring.DozerBeanMapperFactoryBean">
 		<property name="mappingFiles" value="classpath:dozer/event-mapping.xml" />
 	</bean>
-	<bean class="intec.sli.iwstudy.teamcalendar.app.web.service.CustomEventsManager" autowire="constructor" />
+	<!-- <bean class="intec.sli.iwstudy.teamcalendar.app.web.service.CustomEventsManager" autowire="constructor" />  -->
 
 	<!-- domain -->
 	<!-- Declarative transaction management by annotation-driven. -->
