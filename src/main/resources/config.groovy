@@ -7,8 +7,8 @@ reminder {
             password = 'xxxxxxxxxxxxxx'
         }
         typetalk {
-            clientId = ''
-            clientSecret = ''
+            clientId = 'xxxxxxxxxxxxxxxxxxxxxx'
+            clientSecret = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
         }
     }
 }
