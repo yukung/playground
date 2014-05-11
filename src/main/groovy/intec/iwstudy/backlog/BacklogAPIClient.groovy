@@ -3,6 +3,10 @@ package intec.iwstudy.backlog
 import org.apache.xmlrpc.client.XmlRpcClient
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl
 
+/**
+ * Backlog API を XML-RPC でコールするクライアント。
+ * 提供されるメソッドは invokeMethod を通して文字列で指定されます。
+ */
 class BacklogAPIClient {
     private XmlRpcClient client
 
