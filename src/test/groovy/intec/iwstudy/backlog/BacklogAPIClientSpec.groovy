@@ -1,15 +1,21 @@
 package intec.iwstudy.backlog
 
 import org.apache.xmlrpc.XmlRpcException
+import spock.lang.Shared
 import spock.lang.Specification
 
 class BacklogAPIClientSpec extends Specification {
     static final BACKLOG_API_URL = 'https://intec.backlog.jp/XML-RPC'
     static final PROJECT_KEY = 'IWSTUDY'
-    static final USER_NAME = 'yusukei'
-    static final PASSWORD = 'xxxxxxxxxxxx' // FIX ME the valid password here.
+    @Shared
+    def client
 
-    def client = new BacklogAPIClient(BACKLOG_API_URL, USER_NAME, PASSWORD)
+    def setupSpec() {
+        def config = new ConfigSlurper().parse(getClass().classLoader.getResource('config.groovy'))
+        def username = config.reminder.provider.backlog.username
+        def password = config.reminder.provider.backlog.password
+        client = new BacklogAPIClient(BACKLOG_API_URL, username, password)
+    }
 
     def "BacklogAPIClient のインスタンスを取得できること"() {
         expect:
@@ -18,14 +24,14 @@ class BacklogAPIClientSpec extends Specification {
 
     def "BacklogAPIにアクセスするのに必要な Basic 認証が成功してAPIアクセスができること"() {
         when:
-        def projects = client.getProjects()
+        client.getProjects()
         then:
         notThrown(XmlRpcException)
     }
 
     def "BacklogAPIにアクセスするのに必要な Basic 認証がパスワードが妥当でなく 401 Unauthorized で返ってくること"() {
         when: "無効なパスワードが設定されている"
-        def client = new BacklogAPIClient(BACKLOG_API_URL, USER_NAME, "invalid password.")
+        def client = new BacklogAPIClient(BACKLOG_API_URL, 'invalid user', 'invalid PASSWORD.')
         client.getProjects()
         then:
         def e = thrown(XmlRpcException)
@@ -55,11 +61,15 @@ class BacklogAPIClientSpec extends Specification {
     def "プロジェクトIDとカテゴリ名を指定して、課題が検索できる"() {
         when:
         def projectId = client.getProject(PROJECT_KEY).id
-        def componentId = client.getComponents(projectId).find { it.name == 'お題'}.id
+        def componentId = client.getComponents(projectId).find { it.name == 'お題' }.id
         assert componentId != null
         def issue = client.findIssue([projectId: projectId, componentId: componentId])
         then:
         issue != null
-        issue.each { println "${it.summary} : ${it.description.split(/\n/)[0]} : ${it.versions}" }
+        issue.each {
+            it.summary != null
+            it.description != null
+            it.versions != null
+        }
     }
 }
