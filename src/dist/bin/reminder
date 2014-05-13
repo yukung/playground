@@ -1,0 +1,71 @@
+#!/usr/bin/env groovy -classpath .:../*:../lib/*
+import intec.iwstudy.backlog.BacklogAPIClient
+import intec.iwstudy.typetalk.TypetalkAPIClient
+
+conf = new ConfigSlurper().parse getClass().classLoader.getResource('config.groovy')
+// Backlog から情報を取得
+contents = retrieveFromBacklog(conf)
+
+if (!contents
+        || !contents.milestones
+        || !contents.milestones[0]
+        || !contents.milestones[0].date
+        || !contents.milestones[0].date[0]) {
+    println 'Notification cancelled.'
+    System.exit(1)
+}
+// 開催期日がしきい値に近づいているかを判定
+dueDate = contents.versions[0].date[0]
+
+import java.text.SimpleDateFormat
+
+parsedDueDate = new SimpleDateFormat('yyyyMMdd').parse dueDate
+def now = Calendar.getInstance()
+now.set 2014, 2, 17
+def threshold = Calendar.getInstance()
+threshold.setTime parsedDueDate
+threshold.add(Calendar.DATE, -conf.reminder.thresholdOfApproachingDueDate)
+if (now.before(threshold)) {
+// まだ余裕がある場合は、通知間隔を判定
+    def interval = threshold.time - now.time
+    // interval が設定間隔を過ぎていない場合は通知をキャンセル
+    if (interval % conf.reminder.notificationInterval != 0) {
+        println 'Notification cancelled.'
+        System.exit(1)
+    }
+}
+// 通知内容を編集
+def cal = Calendar.getInstance()
+cal.time = parsedDueDate
+dueDate = new SimpleDateFormat('yyyy年M月d日（E）').format cal.time
+text = """
+【業務連絡】
+次回 ${contents.milestones[0].name[0]} のリマインドだよ！
+
+日時： $dueDate
+テーマ： ${contents.summary[0]}
+詳細： ${contents.description[0]}
+"""
+println text
+
+postToTypetalk(conf, text)
+
+def retrieveFromBacklog(def conf) {
+    def backlog = new BacklogAPIClient('https://intec.backlog.jp/XML-RPC',
+            conf.reminder.provider.backlog.username,
+            conf.reminder.provider.backlog.password)
+    def project = backlog.getProject 'IWSTUDY'
+    def categoryId = backlog.getComponents(project.id).find { it.name == 'お題' }.id
+    backlog.findIssue projectId: project.id, componentId: categoryId, statusId: 4, sort: 'DUE_DATE', order: 0, limit: 1
+}
+
+def postToTypetalk(def conf, def text) {
+    def typetalk = new TypetalkAPIClient(
+            conf.reminder.provider.typetalk.clientId,
+            conf.reminder.provider.typetalk.clientSecret,
+            'topic.read,topic.post'
+    )
+    members = typetalk.listTopicMembers(topicId: 5042).accounts.collect { "@${it.account.name}" }
+    typetalk.postTopic(topicId: 5042, message: "${members.join('\n')}$text")
+}
+
