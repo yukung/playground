@@ -1,14 +1,14 @@
 reminder {
-    notificationInterval = 2
+    notificationInterval = 3
     thresholdOfApproachingDueDate = 7
     provider {
         backlog {
             username = 'yusukei'
-            password = 'xxxxxxxxxxxxxx'
+            password = ''
         }
         typetalk {
-            clientId = 'xxxxxxxxxxxxxxxxxxxxxx'
-            clientSecret = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+            clientId = ''
+            clientSecret = ''
         }
     }
 }

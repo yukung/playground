@@ -21,7 +21,6 @@ import java.text.SimpleDateFormat
 
 parsedDueDate = new SimpleDateFormat('yyyyMMdd').parse dueDate
 def now = Calendar.getInstance()
-now.set 2014, 2, 17
 def threshold = Calendar.getInstance()
 threshold.setTime parsedDueDate
 threshold.add(Calendar.DATE, -conf.reminder.thresholdOfApproachingDueDate)
@@ -56,7 +55,7 @@ def retrieveFromBacklog(def conf) {
             conf.reminder.provider.backlog.password)
     def project = backlog.getProject 'IWSTUDY'
     def categoryId = backlog.getComponents(project.id).find { it.name == 'お題' }.id
-    backlog.findIssue projectId: project.id, componentId: categoryId, statusId: 4, sort: 'DUE_DATE', order: 0, limit: 1
+    backlog.findIssue projectId: project.id, componentId: categoryId, statusId: 2, sort: 'DUE_DATE', order: 0, limit: 1
 }
 
 def postToTypetalk(def conf, def text) {
@@ -65,7 +64,7 @@ def postToTypetalk(def conf, def text) {
             conf.reminder.provider.typetalk.clientSecret,
             'topic.read,topic.post'
     )
-    members = typetalk.listTopicMembers(topicId: 5042).accounts.collect { "@${it.account.name}" }
-    typetalk.postTopic(topicId: 5042, message: "${members.join('\n')}$text")
+    members = typetalk.listTopicMembers(topicId: 5008).accounts.collect { "@${it.account.name}" }
+    typetalk.postTopic(topicId: 5008, message: "${members.join('\n')}$text")
 }
 
