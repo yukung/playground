@@ -4,6 +4,8 @@ apply plugin: 'maven'
 apply plugin: 'java-library-distribution'
 apply from: 'http://tellurianring.com/projects/gradle-plugins/gradle-release/apply.groovy'
 
+group = 'org.yukung'
+
 sourceCompatibility = 1.7
 
 repositories {
