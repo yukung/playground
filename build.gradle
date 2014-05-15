@@ -1,12 +1,17 @@
 apply plugin: 'groovy'
 apply plugin: 'idea'
+apply plugin: 'maven'
 apply plugin: 'java-library-distribution'
+apply from: 'http://tellurianring.com/projects/gradle-plugins/gradle-release/apply.groovy'
 
 sourceCompatibility = 1.7
-version = '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
+}
+
+configurations {
+    deployJars
 }
 
 dependencies {
@@ -16,17 +21,36 @@ dependencies {
         exclude module: 'junit'
     }
     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
+    deployJars 'org.apache.maven.wagon:wagon-webdav-jackrabbit:2.6'
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
 processResources {
     ext {
-        password = hasProperty('password') ?: ''
-        clientId = hasProperty('clientId') ?: ''
-        clientSecret = hasProperty('clientSecret') ?: ''
+        backlogPassword = project.hasProperty('backlogPassword') ? project.backlogPassword : ''
+        clientId = project.hasProperty('clientId') ? project.clientId : ''
+        clientSecret = project.hasProperty('clientSecret') ? project.clientSecret : ''
     }
-    filter(ReplaceTokens, tokens: [password: password, clientId: clientId, clientSecret: clientSecret])
+    filter(ReplaceTokens, tokens: [password: backlogPassword, clientId: clientId, clientSecret: clientSecret])
+}
+
+release {
+    failOnCommitNeeded = false
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            configureAuth = {
+                authentication(userName: 'ikeda-yusuke', password: password)
+            }
+            configuration = configurations.deployJars
+            // repository(url: "file:${System.getProperty('user.home')}/.m2/repository")
+            snapshotRepository(url: 'dav:https://repository-yusukei.forge.cloudbees.com/snapshot/', configureAuth)
+            repository(url: 'dav:https://repository-yusukei.forge.cloudbees.com/release/', configureAuth)
+        }
+    }
 }
 
 idea {
