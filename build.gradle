@@ -35,9 +35,6 @@ processResources {
     filter(ReplaceTokens, tokens: [password: backlogPassword, clientId: clientId, clientSecret: clientSecret])
 }
 
-release {
-}
-
 uploadArchives {
     repositories {
         mavenDeployer {
@@ -51,6 +48,8 @@ uploadArchives {
         }
     }
 }
+
+createReleaseTag.dependsOn uploadArchives
 
 idea {
     module {
