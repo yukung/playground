@@ -18,6 +18,17 @@ dependencies {
     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
 }
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
+processResources {
+    ext {
+        password = hasProperty('password') ?: ''
+        clientId = hasProperty('clientId') ?: ''
+        clientSecret = hasProperty('clientSecret') ?: ''
+    }
+    filter(ReplaceTokens, tokens: [password: password, clientId: clientId, clientSecret: clientSecret])
+}
+
 idea {
     module {
         downloadJavadoc = true

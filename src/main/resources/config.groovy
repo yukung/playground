@@ -4,11 +4,11 @@ reminder {
     provider {
         backlog {
             username = 'yusukei'
-            password = ''
+            password = '@password@'
         }
         typetalk {
-            clientId = ''
-            clientSecret = ''
+            clientId = '@clientId@'
+            clientSecret = '@clientSecret@'
         }
     }
 }
