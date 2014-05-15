@@ -36,7 +36,6 @@ processResources {
 }
 
 release {
-    failOnCommitNeeded = false
 }
 
 uploadArchives {
