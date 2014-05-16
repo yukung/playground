@@ -15,7 +15,7 @@ if (!contents
     System.exit(1)
 }
 // 開催期日がしきい値に近づいているかを判定
-dueDate = contents.versions[0].date[0]
+dueDate = contents.milestones[0].date[0]
 
 import java.text.SimpleDateFormat
 
