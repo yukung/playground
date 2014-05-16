@@ -42,7 +42,7 @@ uploadArchives {
         mavenDeployer {
             ext {
                 configureAuth = {
-                    authentication(userName: 'ikeda-yusuke', password: password)
+                    authentication(userName: 'ikeda-yusuke', password: project.password)
                 }
             }
             configuration = configurations.deployJars
