@@ -37,6 +37,10 @@ processResources {
     filter(ReplaceTokens, tokens: [password: backlogPassword, clientId: clientId, clientSecret: clientSecret])
 }
 
+release {
+    requireBranch = ''
+}
+
 uploadArchives {
     repositories {
         mavenDeployer {
