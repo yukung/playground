@@ -1,4 +1,5 @@
-#!/usr/bin/env groovy -classpath .:../*:../lib/*
+#!/bin/bash
+//usr/bin/env groovy -cp .:../*:../lib/* "$0" $@; exit $?
 import intec.iwstudy.backlog.BacklogAPIClient
 import intec.iwstudy.typetalk.TypetalkAPIClient
 
