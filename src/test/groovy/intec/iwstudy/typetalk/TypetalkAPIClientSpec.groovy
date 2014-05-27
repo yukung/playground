@@ -11,7 +11,7 @@ class TypetalkAPIClientSpec extends Specification {
     private TypetalkAPIClient client
 
     def setupSpec() {
-        def typetalk = new ConfigSlurper().parse(getClass().classLoader.getResource('config.groovy')).reminder.provider.typetalk
+        def typetalk = new ConfigSlurper().parse(getClass().classLoader.getResource('authentication.groovy')).provider.typetalk
         client = new TypetalkAPIClient(typetalk.clientId, typetalk.clientSecret, 'topic.read,topic.post')
     }
 

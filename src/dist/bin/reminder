@@ -6,9 +6,10 @@ import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 
 log = LogFactory.getLog('Reminder Logger')
-conf = new ConfigSlurper().parse getClass().classLoader.getResource('config.groovy')
+conf = new ConfigSlurper().parse new File('../conf/config.groovy').toURI().toURL()
+auth = new ConfigSlurper().parse getClass().classLoader.getResource('authentication.groovy')
 // Backlog から情報を取得
-contents = retrieveFromBacklog(conf)
+contents = retrieveFromBacklog(auth)
 
 if (!contents
         || !contents.milestones
@@ -51,16 +52,15 @@ text = """
 """
 log.info(text)
 
-postToTypetalk(conf, text)
+postToTypetalk(auth, text)
 
-def retrieveFromBacklog(def conf) {
+def retrieveFromBacklog(def auth) {
     def backlog = new BacklogAPIClient('https://intec.backlog.jp/XML-RPC',
-            conf.reminder.provider.backlog.username,
-            conf.reminder.provider.backlog.password)
+            auth.provider.backlog.username,
+            auth.provider.backlog.password)
     def project = backlog.getProject 'IWSTUDY'
     def categoryId = backlog.getComponents(project.id).find { it.name == 'お題' }.id
-    //backlog.findIssue projectId: project.id, componentId: categoryId, statusId: 2, sort: 'DUE_DATE', order: 0, limit: 1
-    backlog.findIssue projectId: project.id, componentId: categoryId, statusId: 1, sort: 'DUE_DATE', order: 0, limit: 1
+    backlog.findIssue projectId: project.id, componentId: categoryId, statusId: 2, sort: 'DUE_DATE', order: 0, limit: 1
 }
 
 def postToTypetalk(def conf, def text) {
@@ -69,9 +69,7 @@ def postToTypetalk(def conf, def text) {
             conf.reminder.provider.typetalk.clientSecret,
             'topic.read,topic.post'
     )
-    //members = typetalk.listTopicMembers(topicId: 5008).accounts.collect { "@${it.account.name}" }
-    members = typetalk.listTopicMembers(topicId: 5042).accounts.collect { "@${it.account.name}" }
-    //typetalk.postTopic(topicId: 5008, message: "${members.join('\n')}$text")
-    typetalk.postTopic(topicId: 5042, message: "${members.join('\n')}$text")
+    members = typetalk.listTopicMembers(topicId: 5008).accounts.collect { "@${it.account.name}" }
+    typetalk.postTopic(topicId: 5008, message: "${members.join('\n')}$text")
 }
 

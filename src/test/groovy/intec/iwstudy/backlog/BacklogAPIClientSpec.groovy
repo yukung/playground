@@ -11,9 +11,9 @@ class BacklogAPIClientSpec extends Specification {
     def client
 
     def setupSpec() {
-        def config = new ConfigSlurper().parse(getClass().classLoader.getResource('config.groovy'))
-        def username = config.reminder.provider.backlog.username
-        def password = config.reminder.provider.backlog.password
+        def config = new ConfigSlurper().parse(getClass().classLoader.getResource('authentication.groovy'))
+        def username = config.provider.backlog.username
+        def password = config.provider.backlog.password
         client = new BacklogAPIClient(BACKLOG_API_URL, username, password)
     }
 
