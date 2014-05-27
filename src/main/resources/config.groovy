@@ -1,5 +1,5 @@
 reminder {
-    notificationInterval = 3
+    notificationInterval = 5
     thresholdOfApproachingDueDate = 7
     provider {
         backlog {
