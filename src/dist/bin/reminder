@@ -1,11 +1,5 @@
 #!/bin/bash
 //usr/bin/env groovy -cp .:../*:../lib/* "$0" $@; exit $?
-@Grapes([
-	@GrabConfig(systemClassLoader=true),
-	@Grab(group='org.slf4j', module='slf4j-api', version='1.7.7'),
-	@Grab(group='ch.qos.logback', module='logback-classic', version='1.1.2'),
-	@Grab(group='ch.qos.logback', module='logback-core', version='1.1.2')
-])
 import intec.iwstudy.backlog.BacklogAPIClient
 import intec.iwstudy.typetalk.TypetalkAPIClient
 import org.slf4j.Logger
