@@ -1,13 +1,22 @@
 #!/bin/bash
 //usr/bin/env groovy -cp .:../*:../lib/* "$0" $@; exit $?
+@Grapes([
+	@GrabConfig(systemClassLoader=true),
+	@Grab(group='org.slf4j', module='slf4j-api', version='1.7.7'),
+	@Grab(group='ch.qos.logback', module='logback-classic', version='1.1.2'),
+	@Grab(group='ch.qos.logback', module='logback-core', version='1.1.2')
+])
 import intec.iwstudy.backlog.BacklogAPIClient
 import intec.iwstudy.typetalk.TypetalkAPIClient
-import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
-log = LogFactory.getLog('Reminder Logger')
-conf = new ConfigSlurper().parse new File('../conf/config.groovy').toURI().toURL()
+// ログ設定
+log = LoggerFactory.getLogger(getClass())
+// 設定取得
+conf = new ConfigSlurper().parse new File('../conf/config.groovy').toURL()
 auth = new ConfigSlurper().parse getClass().classLoader.getResource('authentication.groovy')
+
 // Backlog から情報を取得
 contents = retrieveFromBacklog(auth)
 
