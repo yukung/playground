@@ -65,13 +65,6 @@ class TypetalkAPIClient {
     }
 
     private authorize() {
-        def body = client.post(
-                path: '/oauth2/access_token',
-                requestContentType: 'application/x-www-form-urlencoded',
-                body: [client_id: clientId, client_secret: clientSecret, grant_type: grantType, scope: scope]
-        ).data
-        accessToken = body.access_token
-        tokenType = body.token_type
-        refreshToken = body.refresh_token
+        return null
     }
 }
