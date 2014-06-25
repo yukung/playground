@@ -37,7 +37,7 @@ if (now.before(threshold)) {
     def interval = threshold.time - now.time
     // interval が設定間隔を過ぎていない場合は通知をキャンセル
     if (interval % conf.reminder.notificationInterval != 0) {
-        log.info('It is not only the notification interval that has been set.')
+        log.info('It is {} days left until the date of the notice.', interval)
         System.exit(0)
     }
 }

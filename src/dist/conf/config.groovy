@@ -1,4 +1,4 @@
 reminder {
-    notificationInterval = 5
+    notificationInterval = 3
     thresholdOfApproachingDueDate = 7
 }
