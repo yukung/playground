@@ -66,10 +66,10 @@ def retrieveFromBacklog(def auth) {
     backlog.findIssue projectId: project.id, componentId: categoryId, statusId: 2, sort: 'DUE_DATE', order: 0, limit: 1
 }
 
-def postToTypetalk(def conf, def text) {
+def postToTypetalk(def auth, def text) {
     def typetalk = new TypetalkAPIClient(
-            conf.reminder.provider.typetalk.clientId,
-            conf.reminder.provider.typetalk.clientSecret,
+            auth.provider.typetalk.clientId,
+            auth.provider.typetalk.clientSecret,
             'topic.read,topic.post'
     )
     members = typetalk.listTopicMembers(topicId: 5008).accounts.collect { "@${it.account.name}" }
