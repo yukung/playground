@@ -30,13 +30,13 @@ import java.text.SimpleDateFormat
 parsedDueDate = new SimpleDateFormat('yyyyMMdd').parse dueDate
 def now = Calendar.getInstance()
 def threshold = Calendar.getInstance()
-threshold.setTime parsedDueDate
+threshold.time = parsedDueDate
 threshold.add(Calendar.DATE, -conf.reminder.thresholdOfApproachingDueDate)
 if (now.before(threshold)) {
 // まだ余裕がある場合は、通知間隔を判定
     def interval = threshold.time - now.time
     // interval が設定間隔を過ぎていない場合は通知をキャンセル
-    if (interval % conf.reminder.notificationInterval != 0) {
+    if (!(interval % conf.reminder.notificationInterval)) {
         log.info('It is {} days left until the date of the notice.', interval)
         System.exit(0)
     }
@@ -57,7 +57,7 @@ log.info(text)
 
 postToTypetalk(auth, text)
 
-def retrieveFromBacklog(def auth) {
+def retrieveFromBacklog(auth) {
     def backlog = new BacklogAPIClient('https://intec.backlog.jp/XML-RPC',
             auth.provider.backlog.username,
             auth.provider.backlog.password)
@@ -66,7 +66,7 @@ def retrieveFromBacklog(def auth) {
     backlog.findIssue projectId: project.id, componentId: categoryId, statusId: 2, sort: 'DUE_DATE', order: 0, limit: 1
 }
 
-def postToTypetalk(def auth, def text) {
+def postToTypetalk(auth, text) {
     def typetalk = new TypetalkAPIClient(
             auth.provider.typetalk.clientId,
             auth.provider.typetalk.clientSecret,
