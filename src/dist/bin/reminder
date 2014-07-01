@@ -32,6 +32,8 @@ def now = Calendar.getInstance()
 def threshold = Calendar.getInstance()
 threshold.time = parsedDueDate
 threshold.add(Calendar.DATE, -conf.reminder.thresholdOfApproachingDueDate)
+def deadline = Calendar.getInstance()
+deadline.time = parsedDueDate
 if (now.before(threshold)) {
 // まだ余裕がある場合は、通知間隔を判定
     def interval = threshold.time - now.time
@@ -40,11 +42,12 @@ if (now.before(threshold)) {
         log.info('It is {} days left until the date of the notice.', interval)
         System.exit(0)
     }
+} else if (now.after(deadline)) {
+    log.info('There is no notification which is scheduled.')
+    System.exit(0)
 }
 // 通知内容を編集
-def cal = Calendar.getInstance()
-cal.time = parsedDueDate
-dueDate = new SimpleDateFormat('yyyy年M月d日（E）').format cal.time
+dueDate = new SimpleDateFormat('yyyy年M月d日（E）').format deadline.time
 text = """
 【業務連絡】
 次回 ${contents.milestones[0].name[0]} のリマインドだよ！
