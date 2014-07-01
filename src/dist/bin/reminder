@@ -33,32 +33,29 @@ def threshold = Calendar.getInstance()
 threshold.time = parsedDueDate
 threshold.add(Calendar.DATE, -conf.reminder.thresholdOfApproachingDueDate)
 if (now.before(threshold)) {
-    // まだ余裕がある場合は、通知間隔を判定
+// まだ余裕がある場合は、通知間隔を判定
     def interval = threshold.time - now.time
     // interval が設定間隔を過ぎていない場合は通知をキャンセル
     if (!(interval % conf.reminder.notificationInterval)) {
         log.info('It is {} days left until the date of the notice.', interval)
         System.exit(0)
     }
-
-    // 通知内容を編集
-    def cal = Calendar.getInstance()
-    cal.time = parsedDueDate
-    dueDate = new SimpleDateFormat('yyyy年M月d日（E）').format cal.time
-    text = """
-    【業務連絡】
-    次回 ${contents.milestones[0].name[0]} のリマインドだよ！
-
-    日時： $dueDate
-    テーマ： ${contents.summary[0]}
-    詳細： ${contents.description[0]}
-    """
-    log.info(text)
-
-    postToTypetalk(auth, text)
-} else {
-    log.info('There is no notification which is scheduled.')
 }
+// 通知内容を編集
+def cal = Calendar.getInstance()
+cal.time = parsedDueDate
+dueDate = new SimpleDateFormat('yyyy年M月d日（E）').format cal.time
+text = """
+【業務連絡】
+次回 ${contents.milestones[0].name[0]} のリマインドだよ！
+
+日時： $dueDate
+テーマ： ${contents.summary[0]}
+詳細： ${contents.description[0]}
+"""
+log.info(text)
+
+postToTypetalk(auth, text)
 
 def retrieveFromBacklog(auth) {
     def backlog = new BacklogAPIClient('https://intec.backlog.jp/XML-RPC',
