@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>JavaScriptの練習</title>
+</head>
+<body>
+	<script>
+		/*
+			即時関数
+		*/
+
+		(function(name) {
+			console.log("hello " + name);
+		})("Tom");
+
+		(function() {
+			// ローカル変数として扱えるようになる
+			var x = 10,
+				y = 20;
+			console.log(x + y);
+		})();
+	</script>
+</body>
+</html>
