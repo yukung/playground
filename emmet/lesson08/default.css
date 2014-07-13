@@ -1,0 +1,22 @@
+#main {
+	/* m */
+	margin: 10px;
+	/* m10 */
+	margin: 10px;
+	/* m10-10-11-15 */
+	margin: 10px 10px 11px 15px;
+	/* m10--10 */
+	margin: 10px -10px;
+	/* p */
+	padding: 10px;
+	/* w100p */
+	width: 100%;
+	/* c */
+	color: #000;
+	/* c#a */
+	color: #aaa;
+	/* c#bcf */
+	color: #bcf;
+	/* z3 */
+	z-index: 3;
+}
