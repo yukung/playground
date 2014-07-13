@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>JavaScriptの練習</title>
+</head>
+<body>
+	<script>
+		/*
+			組み込みオブジェクト
+
+			- String
+			- Array
+			- Math
+			- Date
+		*/
+		var a = new Array(100, 300, 200);
+		// var a = [100, 300, 200];
+		console.log(a.length);
+		// unshift -> Array <- push
+		// shift   <- array -> pop
+		a.push(500);
+		console.log(a);
+		a.splice(1, 2, 800, 100);
+		console.log(a);
+	</script>
+</body>
+</html>
