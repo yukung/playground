@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>CSSの練習</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        div {
+            background: green;
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+        .label {
+            position: absolute;
+            /* top right left bottom */
+            bottom: -5px;
+            right: -5px;
+            font-size: 14px;
+            background: red;
+            padding: 2px 4px;
+            color: white;
+        }
+        /*
+        position
+        - static
+        - relative 親要素
+        - absolute 子要素
+        - fixed
+        */
+    </style>
+</head>
+<body>
+    <div>
+        <span class="label">NEW!!</span>
+        Box
+    </div>
+</body>
+</html>
