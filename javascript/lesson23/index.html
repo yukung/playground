@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>JavaScriptの練習</title>
+	<style>
+		.myStyle {
+			font-weight: bold;
+			border: 1px solid gray;
+		}
+	</style>
+</head>
+<body>
+	<h1>見出し</h1>
+	<p id="msg">こんにちは！</p>
+	<script>
+		var e = document.getElementById('msg');
+		e.textContent = 'hello';
+		e.style.color = 'red';
+		e.className = 'myStyle';
+
+		/*
+			body
+				p
+					text
+		*/
+		var greet = document.createElement('p'),
+			text = document.createTextNode('hello world');
+		document.body.appendChild(greet).appendChild(text);
+	</script>
+</body>
+</html>
