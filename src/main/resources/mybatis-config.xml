@@ -15,6 +15,6 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="org/yukung/sandbox/mybatis/user/mybatis/UserMapper.xml"/>
+        <mapper class="org.yukung.sandbox.mybatis.user.mybatis.UserMapper"/>
     </mappers>
 </configuration>
