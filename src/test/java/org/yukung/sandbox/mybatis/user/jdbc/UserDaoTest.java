@@ -14,9 +14,9 @@ import java.util.List;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
-public class UserDaoTest {
+public class UserDaoTest extends DaoTestBase {
 
-    private UserDao userDao = new UserDao();
+    private UserDao userDao;
 
     @Before
     public void setUp() throws Exception {
@@ -25,6 +25,7 @@ public class UserDaoTest {
         stmt.execute("CREATE TABLE user (id IDENTITY, name VARCHAR(255), age INTEGER, gender VARCHAR(32))");
         stmt.close();
         conn.close();
+        this.userDao = new UserDao(getConnectionFactory());
     }
 
     @After

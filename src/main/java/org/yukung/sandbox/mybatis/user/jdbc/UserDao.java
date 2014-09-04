@@ -4,7 +4,6 @@ import org.yukung.sandbox.mybatis.user.Gender;
 import org.yukung.sandbox.mybatis.user.User;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,10 +14,17 @@ import java.util.List;
  * @author yukung
  */
 public class UserDao {
+
+    private ConnectionFactory connectionFactory;
+
+    protected UserDao(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
+
     public int insert(User user) {
         String sql = "INSERT INTO user (name, age, gender) VALUES (?, ?, ?)";
         int rowCount = 0;
-        try (Connection conn = DriverManager.getConnection("jdbc:h2:mem:test", "sa", "");
+        try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getName());
             ps.setInt(2, user.getAge());
@@ -33,7 +39,7 @@ public class UserDao {
     public List<User> findAll() {
         String sql = "SELECT * FROM user";
         List<User> users = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection("jdbc:h2:mem:test", "sa", "");
+        try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
@@ -48,5 +54,13 @@ public class UserDao {
             e.printStackTrace();
         }
         return users;
+    }
+
+    private Connection getConnection() throws SQLException {
+        Connection conn = null;
+        if (connectionFactory != null) {
+            conn = connectionFactory.getConnection();
+        }
+        return conn;
     }
 }
