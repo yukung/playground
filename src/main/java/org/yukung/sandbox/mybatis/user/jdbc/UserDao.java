@@ -56,6 +56,26 @@ public class UserDao {
         return users;
     }
 
+    public User findById(Long id) {
+        String sql = "SELECT * FROM user WHERE id = ?";
+        User user = null;
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                user = new User();
+                user.setId(rs.getLong("id"));
+                user.setName(rs.getString("name"));
+                user.setAge(rs.getInt("age"));
+                user.setGender(Gender.valueOf(rs.getString("gender")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     private Connection getConnection() throws SQLException {
         Connection conn = null;
         if (connectionFactory != null) {

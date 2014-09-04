@@ -4,11 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.yukung.sandbox.mybatis.user.Gender;
+import org.yukung.sandbox.mybatis.user.TestUtils;
 import org.yukung.sandbox.mybatis.user.User;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
@@ -20,11 +18,7 @@ public class UserDaoTest extends DaoTestBase {
 
     @Before
     public void setUp() throws Exception {
-        Connection conn = DriverManager.getConnection("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", "");
-        Statement stmt = conn.createStatement();
-        stmt.execute("CREATE TABLE user (id IDENTITY, name VARCHAR(255), age INTEGER, gender VARCHAR(32))");
-        stmt.close();
-        conn.close();
+        TestUtils.createTable();
         this.userDao = new UserDao(getConnectionFactory());
     }
 
@@ -54,12 +48,20 @@ public class UserDaoTest extends DaoTestBase {
         List<User> actual2 = userDao.findAll();
         assertThat(actual2, is(notNullValue()));
         assertThat(actual2, hasSize(1));
-        User actualUser = actual2.get(0);
-        assertThat(actualUser, is(notNullValue()));
-        assertThat(actualUser.getId(), is(notNullValue()));
-        assertThat(actualUser.getName(), is(equalTo(name)));
-        assertThat(actualUser.getAge(), is(equalTo(age)));
-        assertThat(actualUser.getGender(), is(equalTo(gender)));
+        User actualUser1 = actual2.get(0);
+        assertThat(actualUser1, is(notNullValue()));
+        assertThat(actualUser1.getId(), is(notNullValue()));
+        assertThat(actualUser1.getName(), is(equalTo(name)));
+        assertThat(actualUser1.getAge(), is(equalTo(age)));
+        assertThat(actualUser1.getGender(), is(equalTo(gender)));
         assertThat(actual2, is(not(equalTo(actual1))));
+
+        Long id = actualUser1.getId();
+        User actualUser2 = userDao.findById(id);
+        assertThat(actualUser2, is(notNullValue()));
+        assertThat(actualUser2.getId(), is(equalTo(actualUser1.getId())));
+        assertThat(actualUser2.getName(), is(equalTo(actualUser1.getName())));
+        assertThat(actualUser2.getAge(), is(equalTo(actualUser1.getAge())));
+        assertThat(actualUser2.getGender(), is(equalTo(actualUser1.getGender())));
     }
 }
