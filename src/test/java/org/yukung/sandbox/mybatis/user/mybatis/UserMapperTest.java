@@ -1,6 +1,5 @@
 package org.yukung.sandbox.mybatis.user.mybatis;
 
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -13,7 +12,6 @@ import org.yukung.sandbox.mybatis.user.Gender;
 import org.yukung.sandbox.mybatis.user.TestUtils;
 import org.yukung.sandbox.mybatis.user.User;
 
-import java.io.InputStream;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
@@ -24,17 +22,17 @@ import static org.junit.Assert.*;
  */
 public class UserMapperTest {
 
-    private SqlSessionFactory sqlSessionFactory;
+    private static SqlSessionFactory sqlSessionFactory;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
         TestUtils.createTable();
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(MyBatisUtils.getConfiguration());
     }
 
     @Before
     public void setUp() throws Exception {
-        InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
-        sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
     }
 
     @After
