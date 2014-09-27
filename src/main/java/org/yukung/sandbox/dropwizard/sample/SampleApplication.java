@@ -2,12 +2,16 @@ package org.yukung.sandbox.dropwizard.sample;
 
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.auth.basic.BasicAuthProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
 import io.dropwizard.views.ViewBundle;
+import org.eclipse.jetty.security.authentication.BasicAuthenticator;
+import org.yukung.sandbox.dropwizard.sample.auth.SampleAuthenticator;
 import org.yukung.sandbox.dropwizard.sample.health.TemplateHealthCheck;
 import org.yukung.sandbox.dropwizard.sample.resources.HelloWorldResource;
+import org.yukung.sandbox.dropwizard.sample.resources.ProtectedResource;
 import org.yukung.sandbox.dropwizard.sample.resources.ViewResource;
 
 /**
@@ -39,6 +43,8 @@ public class SampleApplication extends Application<SampleConfiguration> {
 		environment.healthChecks().register("template", healthCheck);
 		environment.jersey().register(resource);
         environment.jersey().register(new ViewResource());
+        environment.jersey().register(new BasicAuthProvider<>(new SampleAuthenticator(), "SUPER SECRET STUFF"));
+        environment.jersey().register(new ProtectedResource());
 	}
 
 }
