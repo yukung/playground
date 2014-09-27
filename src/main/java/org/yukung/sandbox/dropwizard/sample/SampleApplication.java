@@ -5,15 +5,19 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.auth.basic.BasicAuthProvider;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+import org.skife.jdbi.v2.DBI;
 import org.yukung.sandbox.dropwizard.sample.auth.SampleAuthenticator;
 import org.yukung.sandbox.dropwizard.sample.core.Person;
 import org.yukung.sandbox.dropwizard.sample.db.PersonDAO;
+import org.yukung.sandbox.dropwizard.sample.db.PersonJdbiDAO;
 import org.yukung.sandbox.dropwizard.sample.health.TemplateHealthCheck;
 import org.yukung.sandbox.dropwizard.sample.resources.HelloWorldResource;
+import org.yukung.sandbox.dropwizard.sample.resources.PeopleJdbiResource;
 import org.yukung.sandbox.dropwizard.sample.resources.PeopleResource;
 import org.yukung.sandbox.dropwizard.sample.resources.ProtectedResource;
 import org.yukung.sandbox.dropwizard.sample.resources.ViewResource;
@@ -65,6 +69,10 @@ public class SampleApplication extends Application<SampleConfiguration> {
         environment.jersey().register(new ProtectedResource());
         final PersonDAO dao = new PersonDAO(hibernateBundle.getSessionFactory());
         environment.jersey().register(new PeopleResource(dao));
+        final DBIFactory factory = new DBIFactory();
+        final DBI jdbi = factory.build(environment, configuration.getDatabaseFactory(), "jdbi");
+        PersonJdbiDAO jdbiDAO = jdbi.onDemand(PersonJdbiDAO.class);
+        environment.jersey().register(new PeopleJdbiResource(jdbiDAO));
     }
 
 }
