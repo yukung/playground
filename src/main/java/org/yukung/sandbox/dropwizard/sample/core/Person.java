@@ -26,6 +26,15 @@ public class Person {
     @Column(name = "jobTitle", nullable = false)
     private String jobTitle;
 
+    public Person() {
+    }
+
+    public Person(int id, String fullName, String jobTitle) {
+        this.id = id;
+        this.fullName = fullName;
+        this.jobTitle = jobTitle;
+    }
+
     public long getId() {
         return id;
     }

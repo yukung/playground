@@ -42,12 +42,12 @@ public class SampleConfiguration extends Configuration {
 	}
 
     @JsonProperty("database")
-    public DataSourceFactory getDatabaseFactory() {
+    public DataSourceFactory getDataSourceFactory() {
         return database;
     }
 
     @JsonProperty("database")
-    public void setDatabaseFactory(DataSourceFactory databaseFactory) {
+    public void setDataSourceFactory(DataSourceFactory databaseFactory) {
         this.database = databaseFactory;
     }
 }

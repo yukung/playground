@@ -30,7 +30,7 @@ public class SampleApplication extends Application<SampleConfiguration> {
     private final HibernateBundle<SampleConfiguration> hibernateBundle = new HibernateBundle<SampleConfiguration>(Person.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(SampleConfiguration configuration) {
-            return configuration.getDatabaseFactory();
+            return configuration.getDataSourceFactory();
         }
     };
 
@@ -50,7 +50,7 @@ public class SampleApplication extends Application<SampleConfiguration> {
         bootstrap.addBundle(new MigrationsBundle<SampleConfiguration>() {
             @Override
             public DataSourceFactory getDataSourceFactory(SampleConfiguration configuration) {
-                return configuration.getDatabaseFactory();
+                return configuration.getDataSourceFactory();
             }
         });
         bootstrap.addBundle(hibernateBundle);
@@ -70,7 +70,7 @@ public class SampleApplication extends Application<SampleConfiguration> {
         final PersonDAO dao = new PersonDAO(hibernateBundle.getSessionFactory());
         environment.jersey().register(new PeopleResource(dao));
         final DBIFactory factory = new DBIFactory();
-        final DBI jdbi = factory.build(environment, configuration.getDatabaseFactory(), "jdbi");
+        final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "jdbi");
         PersonJdbiDAO jdbiDAO = jdbi.onDemand(PersonJdbiDAO.class);
         environment.jersey().register(new PeopleJdbiResource(jdbiDAO));
     }

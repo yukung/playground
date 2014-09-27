@@ -23,14 +23,4 @@
             </column>
         </addColumn>
     </changeSet>
-    <changeSet id="3" author="yukung">
-        <createTable tableName="temp">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="fullName" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
 </databaseChangeLog>
