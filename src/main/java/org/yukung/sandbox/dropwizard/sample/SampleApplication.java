@@ -1,11 +1,14 @@
 package org.yukung.sandbox.dropwizard.sample;
 
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
+import io.dropwizard.views.ViewBundle;
 import org.yukung.sandbox.dropwizard.sample.health.TemplateHealthCheck;
 import org.yukung.sandbox.dropwizard.sample.resources.HelloWorldResource;
+import org.yukung.sandbox.dropwizard.sample.resources.ViewResource;
 
 /**
  * @author yukung
@@ -23,9 +26,9 @@ public class SampleApplication extends Application<SampleConfiguration> {
 
 	@Override
 	public void initialize(Bootstrap<SampleConfiguration> bootstrap) {
-		// TODO Auto-generated method stub
-
-	}
+        bootstrap.addBundle(new AssetsBundle());
+        bootstrap.addBundle(new ViewBundle());
+    }
 
 	@Override
 	public void run(SampleConfiguration configuration, Environment environment) throws Exception {
@@ -35,6 +38,7 @@ public class SampleApplication extends Application<SampleConfiguration> {
 				new TemplateHealthCheck(configuration.getTemplate());
 		environment.healthChecks().register("template", healthCheck);
 		environment.jersey().register(resource);
+        environment.jersey().register(new ViewResource());
 	}
 
 }
