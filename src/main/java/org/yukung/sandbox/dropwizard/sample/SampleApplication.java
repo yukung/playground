@@ -3,14 +3,18 @@ package org.yukung.sandbox.dropwizard.sample;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.auth.basic.BasicAuthProvider;
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-
 import io.dropwizard.views.ViewBundle;
-import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.yukung.sandbox.dropwizard.sample.auth.SampleAuthenticator;
+import org.yukung.sandbox.dropwizard.sample.core.Person;
+import org.yukung.sandbox.dropwizard.sample.db.PersonDAO;
 import org.yukung.sandbox.dropwizard.sample.health.TemplateHealthCheck;
 import org.yukung.sandbox.dropwizard.sample.resources.HelloWorldResource;
+import org.yukung.sandbox.dropwizard.sample.resources.PeopleResource;
 import org.yukung.sandbox.dropwizard.sample.resources.ProtectedResource;
 import org.yukung.sandbox.dropwizard.sample.resources.ViewResource;
 
@@ -18,6 +22,13 @@ import org.yukung.sandbox.dropwizard.sample.resources.ViewResource;
  * @author yukung
  */
 public class SampleApplication extends Application<SampleConfiguration> {
+
+    private final HibernateBundle<SampleConfiguration> hibernateBundle = new HibernateBundle<SampleConfiguration>(Person.class) {
+        @Override
+        public DataSourceFactory getDataSourceFactory(SampleConfiguration configuration) {
+            return configuration.getDatabaseFactory();
+        }
+    };
 
 	public static void main(String[] args) throws Exception {
 		new SampleApplication().run(args);
@@ -32,6 +43,13 @@ public class SampleApplication extends Application<SampleConfiguration> {
 	public void initialize(Bootstrap<SampleConfiguration> bootstrap) {
         bootstrap.addBundle(new AssetsBundle());
         bootstrap.addBundle(new ViewBundle());
+        bootstrap.addBundle(new MigrationsBundle<SampleConfiguration>() {
+            @Override
+            public DataSourceFactory getDataSourceFactory(SampleConfiguration configuration) {
+                return configuration.getDatabaseFactory();
+            }
+        });
+        bootstrap.addBundle(hibernateBundle);
     }
 
 	@Override
@@ -45,6 +63,8 @@ public class SampleApplication extends Application<SampleConfiguration> {
         environment.jersey().register(new ViewResource());
         environment.jersey().register(new BasicAuthProvider<>(new SampleAuthenticator(), "SUPER SECRET STUFF"));
         environment.jersey().register(new ProtectedResource());
-	}
+        final PersonDAO dao = new PersonDAO(hibernateBundle.getSessionFactory());
+        environment.jersey().register(new PeopleResource(dao));
+    }
 
 }
