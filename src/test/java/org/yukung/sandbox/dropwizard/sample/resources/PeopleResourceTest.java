@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.yukung.sandbox.dropwizard.sample.core.Person;
 import org.yukung.sandbox.dropwizard.sample.db.PersonDAO;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**

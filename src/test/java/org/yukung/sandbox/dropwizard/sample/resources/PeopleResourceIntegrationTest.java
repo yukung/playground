@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.*;
 
 /**
  * @author yukung

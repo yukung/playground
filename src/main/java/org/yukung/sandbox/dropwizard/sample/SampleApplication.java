@@ -34,17 +34,17 @@ public class SampleApplication extends Application<SampleConfiguration> {
         }
     };
 
-	public static void main(String[] args) throws Exception {
-		new SampleApplication().run(args);
-	}
+    public static void main(String[] args) throws Exception {
+        new SampleApplication().run(args);
+    }
 
-	@Override
-	public String getName() {
-		return "Sample Application";
-	}
+    @Override
+    public String getName() {
+        return "Sample Application";
+    }
 
-	@Override
-	public void initialize(Bootstrap<SampleConfiguration> bootstrap) {
+    @Override
+    public void initialize(Bootstrap<SampleConfiguration> bootstrap) {
         bootstrap.addBundle(new AssetsBundle());
         bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(new MigrationsBundle<SampleConfiguration>() {
@@ -56,14 +56,14 @@ public class SampleApplication extends Application<SampleConfiguration> {
         bootstrap.addBundle(hibernateBundle);
     }
 
-	@Override
-	public void run(SampleConfiguration configuration, Environment environment) throws Exception {
-		final HelloWorldResource resource =
-				new HelloWorldResource(configuration.getTemplate(), configuration.getDefaultName());
-		final TemplateHealthCheck healthCheck =
-				new TemplateHealthCheck(configuration.getTemplate());
-		environment.healthChecks().register("template", healthCheck);
-		environment.jersey().register(resource);
+    @Override
+    public void run(SampleConfiguration configuration, Environment environment) throws Exception {
+        final HelloWorldResource resource =
+                new HelloWorldResource(configuration.getTemplate(), configuration.getDefaultName());
+        final TemplateHealthCheck healthCheck =
+                new TemplateHealthCheck(configuration.getTemplate());
+        environment.healthChecks().register("template", healthCheck);
+        environment.jersey().register(resource);
         environment.jersey().register(new ViewResource());
         environment.jersey().register(new BasicAuthProvider<>(new SampleAuthenticator(), "SUPER SECRET STUFF"));
         environment.jersey().register(new ProtectedResource());

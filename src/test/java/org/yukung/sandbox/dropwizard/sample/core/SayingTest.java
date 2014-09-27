@@ -5,7 +5,7 @@ import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.FixtureHelpers;
 import org.junit.Test;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.*;
 
 /**
  * @author yukung

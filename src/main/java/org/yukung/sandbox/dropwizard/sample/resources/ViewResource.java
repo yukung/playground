@@ -21,6 +21,7 @@ public class ViewResource {
         return new View("/views/ftl/utf8.ftl", Charsets.UTF_8) {
         };
     }
+
     @GET
     @Produces("text/html;charset=UTF-8")
     @Path("/mustache")
