@@ -1,0 +1,60 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+group = 'org.yukung.sandbox'
+version = '0.0.1-SNAPSHOT'
+
+def jdkVersion = 1.7
+def projectEncoding = 'UTF-8'
+
+sourceCompatibility = jdkVersion
+targetCompatibility = jdkVersion
+[compileJava, compileTestJava]*.options*.encoding = projectEncoding
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.1.1'
+    }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+repositories {
+	mavenCentral()
+}
+
+def dropwizardVersion = '0.7.0'
+
+dependencies {
+	compile "io.dropwizard:dropwizard-core:$dropwizardVersion"
+	compile "io.dropwizard:dropwizard-assets:$dropwizardVersion"
+	compile "io.dropwizard:dropwizard-views-freemarker:$dropwizardVersion"
+	compile "io.dropwizard:dropwizard-views-mustache:$dropwizardVersion"
+	compile "io.dropwizard:dropwizard-auth:$dropwizardVersion"
+	compile "io.dropwizard:dropwizard-hibernate:$dropwizardVersion"
+	compile "io.dropwizard:dropwizard-jdbi:$dropwizardVersion"
+	compile "io.dropwizard:dropwizard-migrations:$dropwizardVersion"
+	compile 'com.h2database:h2:1.4.181'
+	testCompile 'junit:junit:4.11'
+	testCompile "io.dropwizard:dropwizard-testing:$dropwizardVersion"
+}
+
+import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
+shadowJar {
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+    transform(ServiceFileTransformer)
+}
+
+jar {
+	manifest {
+		attributes 'Implementation-Title': project.name, 'Implementation-Version': version, 'Implementation-Vendor-Id': project.group
+		attributes 'Main-Class': 'org.yukung.sandbox.dropwizard.sample.SampleApplication'
+	}
+}
+
+assemble.dependsOn shadowJar
