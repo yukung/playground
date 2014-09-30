@@ -99,6 +99,9 @@ local.properties
 # IntelliJ
 out/
 
+# Annotation Processor generate files
+generated*
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
