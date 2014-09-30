@@ -26,9 +26,27 @@ repositories {
 	mavenCentral()
 }
 
+configurations {
+	provided
+}
+
+sourceSets {
+	main.compileClasspath += configurations.provided
+	test {
+		compileClasspath += configurations.provided
+		runtimeClasspath += configurations.provided
+	}
+}
+
+eclipse.classpath {
+	plusConfigurations += configurations.provided
+	noExportConfigurations += configurations.provided
+}
+
 def dropwizardVersion = '0.7.0'
 
 dependencies {
+	provided 'org.projectlombok:lombok:1.14.8'
 	compile "io.dropwizard:dropwizard-core:$dropwizardVersion"
 	compile "io.dropwizard:dropwizard-assets:$dropwizardVersion"
 	compile "io.dropwizard:dropwizard-views-freemarker:$dropwizardVersion"
