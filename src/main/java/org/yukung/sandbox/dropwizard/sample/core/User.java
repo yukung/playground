@@ -1,16 +1,11 @@
 package org.yukung.sandbox.dropwizard.sample.core;
 
+import lombok.Data;
+
 /**
  * @author yukung
  */
+@Data
 public class User {
-    private final String name;
-
-    public User(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
+	private final String name;
 }
