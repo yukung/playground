@@ -25,4 +25,27 @@
             <column name="deleteFlag" value="0"/>
         </insert>
     </changeSet>
+    <changeSet id="2" author="yukung" context="testGetAndUpdateEmployee">
+    	<insert tableName="employee">
+    		<column name="employee_id" value="1"/>
+    		<column name="employee_name" value="SMITH"/>
+    		<column name="hiredate" value="1980-12-17"/>
+    		<column name="salary" value="800"/>
+    		<column name="version_no" value="1"/>
+    	</insert>
+    	<insert tableName="employee">
+    		<column name="employee_id" value="2"/>
+    		<column name="employee_name" value="ALLEN"/>
+    		<column name="hiredate" value="1981-02-20"/>
+    		<column name="salary" value="1600"/>
+    		<column name="version_no" value="1"/>
+    	</insert>
+    	<insert tableName="employee">
+    		<column name="employee_id" value="3"/>
+    		<column name="employee_name" value="WARD"/>
+    		<column name="hiredate" value="1981-02-22"/>
+    		<column name="salary" value="1250"/>
+    		<column name="version_no" value="1"/>
+    	</insert>
+    </changeSet>
 </databaseChangeLog>

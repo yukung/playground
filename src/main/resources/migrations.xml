@@ -23,4 +23,15 @@
             </column>
         </addColumn>
     </changeSet>
+    <changeSet id="3" author="yukung">
+    	<createTable tableName="employee">
+    		<column name="employee_id" type="integer">
+    			<constraints primaryKey="true" nullable="false"/>
+    		</column>
+    		<column name="employee_name" type="varchar(20)"/>
+    		<column name="hiredate" type="date"/>
+    		<column name="salary" type="numeric(7,2)"/>
+    		<column name="version_no" type="integer"/>
+    	</createTable>
+    </changeSet>
 </databaseChangeLog>
