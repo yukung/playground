@@ -6,12 +6,17 @@ import org.seasar.doma.Update;
 import org.yukung.sandbox.dropwizard.sample.SampleDomaConfig;
 import org.yukung.sandbox.dropwizard.sample.core.Employee;
 
+import java.util.List;
+
 @Dao(config = SampleDomaConfig.class)
 public interface EmployeeDao {
 
-	@Select
-	Employee selectById(Integer employeeId);
+    @Select
+    Employee selectById(Integer employeeId);
 
-	@Update
-	int update(Employee employee);
+    @Select
+    List<Employee> selectAll();
+
+    @Update
+    int update(Employee employee);
 }
