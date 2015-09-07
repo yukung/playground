@@ -22,13 +22,13 @@ function bindToMessageBody(messages) {
         var indexTd = $('<td></td>').html(index);
         indexTd.appendTo(tr);
 
-        var createAt = '';
-        if (message.createAt) {
-            var c = moment(parseInt(message.createAt, 10));
-            createAt = c.format('YYYY年MM月DD日 HH:mm:ss');
+        var createdAt = '';
+        if (message.createdAt) {
+            var c = moment(message.createdAt);
+            createdAt = c.format('YYYY年MM月DD日 HH:mm:ss');
         }
-        var createAtTd = $('<td></td>').html(createAt);
-        createAtTd.appendTo(tr);
+        var createdAtTd = $('<td></td>').html(createdAt);
+        createdAtTd.appendTo(tr);
 
         var contents = message.contents || '';
         var contentsTd = $('<td></td>').text(contents);
