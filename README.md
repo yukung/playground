@@ -19,6 +19,7 @@ In this project you get:
 * Reloading enabled in build.gradle
 * A standard project structure:
 
+```
     <proj>
       |
       +- src
@@ -45,6 +46,7 @@ In this project you get:
               +- groovy
                    |
                    +- // Spock tests in here!
+```
 
 That's it! You can start the basic app with
 
