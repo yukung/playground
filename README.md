@@ -1,6 +1,6 @@
 Team Calendar
 =============
-Copyright © 2014-, Yusuke Ikeda, CyberAgent, Inc., and members of SLI-WEB Project Team of INTEC, Inc.
+Copyright © 2014-, Yusuke Ikeda, and members of IWSTUDY Project Team.
 
 Licensed under [GPL License].
 
