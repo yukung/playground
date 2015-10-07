@@ -1,5 +1,5 @@
 plugins {
-    id "io.ratpack.ratpack-groovy" version "1.0.0-rc-3"
+    id "io.ratpack.ratpack-groovy" version "1.0.0"
     id "com.github.johnrengelman.shadow" version "1.2.2"
     id "idea"
     id "eclipse"
@@ -13,7 +13,7 @@ dependencies {
     compile ratpack.dependency("h2")
     compile ratpack.dependency("hikari")
     compile ratpack.dependency("rx")
-    // not found ratpack-jackson 1.0.0-rc-3 from jcenter/mavenCentral.
+    // not found ratpack-jackson 1.0.0 from jcenter/mavenCentral.
 //    compile ratpack.dependency("jackson")
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.5.2"
     // Default SLF4J binding.  Note that this is a blocking implementation.
