@@ -51,6 +51,15 @@ abstract class Authority {
         return new NullAuth();
     }
 
+    static String toLowerHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(TOHEX.charAt((b >> 4) & 0x0f));
+            sb.append(TOHEX.charAt(b & 0x0f));
+        }
+        return sb.toString();
+    }
+
     private static void printRealm(PrintWriter writer) {
         writer.print(" realm=\"");
         writer.print(realm());
@@ -74,15 +83,6 @@ abstract class Authority {
         return toLowerHex(md5.digest(s.getBytes()));
     }
 
-    static String toLowerHex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(TOHEX.charAt((b >> 4) & 0x0f));
-            sb.append(TOHEX.charAt(b & 0x0f));
-        }
-        return sb.toString();
-    }
-
     void authorize(String[] metadatas) {
         for (String metadata : metadatas) {
             Matcher m = AUTHORIZATION.matcher(metadata);
@@ -96,15 +96,15 @@ abstract class Authority {
         handleNoCredential();
     }
 
-    public abstract void challenge(PrintWriter writer) throws IOException;
+    boolean checkCredentials(String credentials) {
+        return false;
+    }
 
     void handleNoCredential() {
         throw new AuthorizationException("Authorization Required");
     }
 
-    boolean checkCredentials(String credentials) {
-        return false;
-    }
+    abstract void challenge(PrintWriter writer) throws IOException;
 
     private static class AuthorizationException extends HttpServer.BadRequestException {
         AuthorizationException(String msg) {
@@ -125,7 +125,7 @@ abstract class Authority {
         }
 
         @Override
-        public void challenge(PrintWriter writer) throws IOException {
+        void challenge(PrintWriter writer) throws IOException {
             writer.print("WWW-Authenticate: ");
             writer.print("Basic");
             printRealm(writer);
@@ -133,16 +133,6 @@ abstract class Authority {
     }
 
     private static class DigestAuth extends Authority {
-        @Override
-        public void challenge(PrintWriter writer) throws IOException {
-            writer.print("WWW-Authenticate: ");
-            writer.print("Digest");
-            printRealm(writer);
-            writer.print(", ");
-            printNonce(writer);
-            writer.print(", algorithm=MD5, qop=\"auth\"");
-        }
-
         boolean checkCredentials(String credentials) {
             Matcher m = DIGEST_CREDENTIAL_BASE.matcher(credentials);
             if (!m.find())
@@ -172,13 +162,23 @@ abstract class Authority {
             return false;
         }
 
-        void printNonce(PrintWriter writer) {
+        @Override
+        void challenge(PrintWriter writer) throws IOException {
+            writer.print("WWW-Authenticate: ");
+            writer.print("Digest");
+            printRealm(writer);
+            writer.print(", ");
+            printNonce(writer);
+            writer.print(", algorithm=MD5, qop=\"auth\"");
+        }
+
+        private void printNonce(PrintWriter writer) {
             writer.print("nonce=\"");
             writer.print(nonce());
             writer.print("\"");
         }
 
-        String nonce() {
+        private String nonce() {
             String seed = Long.toHexString(System.currentTimeMillis()) + Integer.toHexString(hashCode());
             try {
                 return md5(seed);
@@ -199,7 +199,7 @@ abstract class Authority {
         }
 
         @Override
-        public void challenge(PrintWriter writer) throws IOException {
+        void challenge(PrintWriter writer) throws IOException {
         }
 
     }
