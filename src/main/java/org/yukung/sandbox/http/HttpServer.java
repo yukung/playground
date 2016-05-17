@@ -20,12 +20,14 @@ import java.util.regex.Pattern;
  */
 public class HttpServer {
 
+    private static final Pattern LINEAR_WHITE_SPACE = Pattern.compile("\\r\\n[ \\t]+");
     static final int DEFAULT_PORT = 8800;
     private static final Pattern COMMAND = Pattern.compile("^(\\w+)\\s+(.+?)\\s+HTTP/([\\d.]+)$");
     private static final String LF = System.getProperty("line.separator");
     private static final int MAX_HEADER_SIZE = 16384;
     private ServerSocket serverSocket;
     private boolean debug;
+    private Authority authority;
 
     HttpServer(int port) throws IOException {
         serverSocket = new ServerSocket();
@@ -45,7 +47,7 @@ public class HttpServer {
         }
         HttpServer server = new HttpServer(port);
         server.setDebug(debug);
-        server.service();
+        server.service(Authority.DIGEST);
         server.close();
     }
 
@@ -62,7 +64,12 @@ public class HttpServer {
     }
 
     void service() throws IOException {
+        service(null);
+    }
+
+    void service(String authType) throws IOException {
         assert serverSocket != null;
+        authority = Authority.newAuthority(authType);
 
         for (Socket sock = accept(); sock != null; sock = accept()) {
             try {
@@ -79,12 +86,16 @@ public class HttpServer {
                 }
                 response(sock.getOutputStream(), e);
             } finally {
-                sock.close();
+                try {
+                    sock.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    private void response(OutputStream out, BadRequestException e) {
+    private void response(OutputStream out, BadRequestException e) throws IOException {
         response(e.statusCode, e.responseMessage, out);
     }
 
@@ -126,12 +137,14 @@ public class HttpServer {
         pw.flush();
     }
 
-    private void response(int status, String msg, OutputStream out) {
+    private void response(int status, String msg, OutputStream out) throws IOException {
         PrintWriter pw = new PrintWriter(out);
         pw.print("HTTP/1.1 ");
         pw.print(status);
         pw.print(" ");
         pw.print(msg);
+        pw.print("\r\n");
+        authority.challenge(pw);
         pw.print("\r\n\r\n");
         pw.flush();
     }
@@ -149,6 +162,27 @@ public class HttpServer {
         this.debug = debug;
     }
 
+    static class BadRequestException extends RuntimeException {
+        String responseMessage;
+        int statusCode;
+
+        BadRequestException(String msg, String resp, int initCode) {
+            super(msg);
+            responseMessage = resp;
+            statusCode = initCode;
+        }
+
+        BadRequestException(String msg, int initCode) {
+            super(msg);
+            responseMessage = msg;
+            statusCode = initCode;
+        }
+
+        BadRequestException(String msg) {
+            this(msg, HttpURLConnection.HTTP_BAD_REQUEST);
+        }
+    }
+
     private class Request {
         String method;
         String version;
@@ -157,6 +191,7 @@ public class HttpServer {
         InputStream in;
 
         Request(Socket sock) throws IOException {
+            assert authority != null;
             in = sock.getInputStream();
             header();
             if (debug) {
@@ -165,6 +200,7 @@ public class HttpServer {
                     System.out.println(metadata);
                 }
             }
+            authority.authorize(metadatas);
         }
 
         private void header() throws IOException {
@@ -172,7 +208,8 @@ public class HttpServer {
             for (int i = 0; ; i++) {
                 int c = in.read();
                 if (c < 0) {
-                    throw new BadRequestException("header too short: " + new String(buff, 0, i), "header too short", HttpURLConnection.HTTP_BAD_REQUEST);
+                    throw new BadRequestException("header too short: " + new String(buff, 0, i), "header too short",
+                        HttpURLConnection.HTTP_BAD_REQUEST);
                 }
                 buff[i] = (byte) c;
                 if (i > 3 && buff[i - 3] == '\r' && buff[i - 2] == '\n' && buff[i - 1] == '\r' && buff[i] == '\n') {
@@ -180,7 +217,8 @@ public class HttpServer {
                     break;
                 } else if (i == buff.length - 1) {
                     if (i > MAX_HEADER_SIZE) {
-                        throw new BadRequestException("header too long:" + new String(buff, 0, 256), "header too long", HttpURLConnection.HTTP_BAD_REQUEST);
+                        throw new BadRequestException("header too long:" + new String(buff, 0, 256), "header too long",
+                            HttpURLConnection.HTTP_BAD_REQUEST);
                     }
                     byte[] nbuff = new byte[buff.length * 2];
                     System.arraycopy(buff, 0, nbuff, 0, i + 1);
@@ -198,9 +236,11 @@ public class HttpServer {
                         path = m.group(2);
                         version = m.group(3);
                     } else {
-                        throw new BadRequestException(new String(buff, 0, i + 1), "header too long", HttpURLConnection.HTTP_BAD_REQUEST);
+                        throw new BadRequestException(new String(buff, 0, i + 1), "header too long",
+                            HttpURLConnection.HTTP_BAD_REQUEST);
                     }
-                    metadatas = new String(buff, i + 1, len - i).split("\\r\\n");
+                    String headers = LINEAR_WHITE_SPACE.matcher(new String(buff, i + 1, len - i)).replaceAll(" ");
+                    metadatas = headers.split("\\r\\n");
                     break;
                 }
             }
@@ -208,25 +248,8 @@ public class HttpServer {
 
         public String toString() {
             return super.toString() + LF +
-                    method +
-                    ' ' + path + " HTTP/" + version;
-        }
-    }
-
-    private class BadRequestException extends RuntimeException {
-        String responseMessage;
-        int statusCode;
-
-        BadRequestException(String msg, String resp, int initCode) {
-            super(msg);
-            responseMessage = resp;
-            statusCode = initCode;
-        }
-
-        BadRequestException(String msg, int initCode) {
-            super(msg);
-            responseMessage = msg;
-            statusCode = initCode;
+                method +
+                ' ' + path + " HTTP/" + version;
         }
     }
 }
