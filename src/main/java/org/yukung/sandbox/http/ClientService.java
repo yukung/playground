@@ -45,6 +45,7 @@ abstract class ClientService {
     abstract void doService(Socket socket);
 
     void stop() {
+        // noop
     }
 
     private static class StClientServiceImpl extends ClientService {
@@ -100,6 +101,7 @@ abstract class ClientService {
                 clients.notifyAll();
             }
         }
+        @Override
         void stop() {
             synchronized (clients) {
                 for (Socket client : clients) {
