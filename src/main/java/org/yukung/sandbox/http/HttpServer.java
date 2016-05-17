@@ -35,23 +35,15 @@ public class HttpServer {
         serverSocket.bind(new InetSocketAddress(port));
     }
 
-    public static void main(String[] args) throws IOException {
-        int port = DEFAULT_PORT;
-        boolean debug = false;
-        for (String arg : args) {
-            if (arg.equals("-d")) {
-                debug = true;
-            } else if (arg.matches("^\\d+$")) {
-                port = Integer.parseInt(arg);
-            }
-        }
-        HttpServer server = new HttpServer(port);
-        server.setDebug(debug);
-        server.service(Authority.DIGEST);
-        server.close();
+    private void setDebugEnabled(boolean debug) {
+        this.debug = debug;
     }
 
-    void close() {
+    boolean isDebugEnabled() {
+        return debug;
+    }
+
+    synchronized void close() {
         if (serverSocket == null) {
             return;
         }
@@ -71,32 +63,33 @@ public class HttpServer {
         assert serverSocket != null;
         authority = Authority.newAuthority(authType);
 
-        for (Socket sock = accept(); sock != null; sock = accept()) {
-            try {
-                Request req = new Request(sock);
-                if (req.path.equals("/quit")) {
-                    response(200, "OK", sock.getOutputStream());
-                    break;
-                } else {
-                    response(req, sock.getOutputStream());
-                }
-            } catch (BadRequestException e) {
-                if (debug) {
-                    e.printStackTrace();
-                }
-                response(sock.getOutputStream(), e);
-            } finally {
-                try {
-                    sock.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        ClientService service = ClientService.newService(this);
+
+        for (;;) {
+            Socket sock = accept();
+            if (sock == null) {
+                break;
             }
+            service.doService(sock);
         }
+        service.stop();
     }
 
-    private void response(OutputStream out, BadRequestException e) throws IOException {
-        response(e.statusCode, e.responseMessage, out);
+    void requestAndResponse(Socket socket) throws IOException {
+        try {
+            Request req = new Request(socket);
+            if (req.path.equals("/quit")) {
+                response(200, "OK", socket.getOutputStream());
+                close();
+            } else {
+                response(req, socket.getOutputStream());
+            }
+        } catch (BadRequestException e) {
+            if (debug) {
+                e.printStackTrace();
+            }
+            response(socket.getOutputStream(), e);
+        }
     }
 
     private void response(Request req, OutputStream out) throws IOException {
@@ -122,6 +115,10 @@ public class HttpServer {
                 out.write(c);
             }
         }
+    }
+
+    private void response(OutputStream out, BadRequestException e) throws IOException {
+        response(e.statusCode, e.responseMessage, out);
     }
 
     private void responseSuccess(int len, String type, OutputStream out) {
@@ -150,16 +147,32 @@ public class HttpServer {
     }
 
     private Socket accept() throws IOException {
+        ServerSocket s = this.serverSocket;
+        if (s == null) {
+            return null;
+        }
         try {
-            return serverSocket.accept();
+            return s.accept();
         } catch (SocketException e) {
             System.out.println("done");
         }
         return null;
     }
 
-    private void setDebug(boolean debug) {
-        this.debug = debug;
+    public static void main(String[] args) throws IOException {
+        int port = DEFAULT_PORT;
+        boolean debug = false;
+        for (String arg : args) {
+            if (arg.equals("-d")) {
+                debug = true;
+            } else if (arg.matches("^\\d+$")) {
+                port = Integer.parseInt(arg);
+            }
+        }
+        HttpServer server = new HttpServer(port);
+        server.setDebugEnabled(debug);
+        server.service(null/*Authority.DIGEST*/);
+        server.close();
     }
 
     static class BadRequestException extends RuntimeException {

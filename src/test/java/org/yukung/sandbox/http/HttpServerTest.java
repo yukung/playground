@@ -73,6 +73,22 @@ public class HttpServerTest {
     }
 
     @Test
+    public void testMt() throws Exception {
+        System.setProperty(ClientService.THREAD_TYPE_KEY, ClientService.THREAD_TYPE_MULTI);
+        testService();
+        server.close();
+        server = new HttpServer(HttpServer.DEFAULT_PORT);
+        testServiceExit();
+        server.close();
+        System.setProperty(ClientService.THREAD_TYPE_KEY, ClientService.THREAD_TYPE_POOL);
+        server = new HttpServer(HttpServer.DEFAULT_PORT);
+        testService();
+        server.close();
+        server = new HttpServer(HttpServer.DEFAULT_PORT);
+        testServiceExit();
+    }
+
+    @Test
     public void testBasicAuth() throws Exception {
         Thread t = new Thread(() -> {
             try {
