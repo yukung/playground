@@ -18,7 +18,7 @@ abstract class Authority {
     static final String DIGEST = "digest";
 
     private static final Pattern AUTHORIZATION =
-        Pattern.compile("^Authorization:[ \\t]*(.+)$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("^Authorization:[ \\t]*(.+)$", Pattern.CASE_INSENSITIVE);
 
     private static final Pattern BASIC_CREDENTIAL = Pattern.compile("^basic[ \\t]+(.+)$", Pattern.CASE_INSENSITIVE);
 
@@ -73,7 +73,7 @@ abstract class Authority {
     private static String getValue(String credentials, Pattern pattern) {
         Matcher m = pattern.matcher(credentials);
         if (!m.find()) {
-            throw new HttpServer.BadRequestException("bad/missing directives");
+            throw new Request.BadRequestException("bad/missing directives");
         }
         return m.group(1);
     }
@@ -83,9 +83,9 @@ abstract class Authority {
         return toLowerHex(md5.digest(s.getBytes()));
     }
 
-    void authorize(String[] metadatas) {
-        for (String metadata : metadatas) {
-            Matcher m = AUTHORIZATION.matcher(metadata);
+    void authorize(String[] metadata) {
+        for (String field : metadata) {
+            Matcher m = AUTHORIZATION.matcher(field);
             if (m.find()) {
                 if (checkCredentials(m.group(1))) {
                     return;
@@ -106,7 +106,7 @@ abstract class Authority {
 
     abstract void challenge(PrintWriter writer) throws IOException;
 
-    private static class AuthorizationException extends HttpServer.BadRequestException {
+    private static class AuthorizationException extends Request.BadRequestException {
         AuthorizationException(String msg) {
             super(msg, HttpURLConnection.HTTP_UNAUTHORIZED);
         }
@@ -136,14 +136,14 @@ abstract class Authority {
         boolean checkCredentials(String credentials) {
             Matcher m = DIGEST_CREDENTIAL_BASE.matcher(credentials);
             if (!m.find())
-                throw new HttpServer.BadRequestException("bad/missing directives");
+                throw new Request.BadRequestException("bad/missing directives");
             String user = m.group(1);
             String rest = m.group(2);
             String realm = getValue(rest, DIGEST_CREDENTIAL_REALM);
             if (!realm.equals(realm()))
-                throw new HttpServer.BadRequestException("bad/missing directives");
+                throw new Request.BadRequestException("bad/missing directives");
             if (!DIGEST_CREDENTIAL_ALGORITHM.matcher(rest).find() || !DIGEST_CREDENTIAL_QOP.matcher(rest).find()) {
-                throw new HttpServer.BadRequestException("bad/missing directives");
+                throw new Request.BadRequestException("bad/missing directives");
             }
             String nonce = getValue(rest, DIGEST_CREDENTIAL_NONCE);
             String uri = getValue(rest, DIGEST_CREDENTIAL_URI);
