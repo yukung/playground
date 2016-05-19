@@ -186,7 +186,7 @@ class Request {
     private void response(SelectionKey key) throws IOException {
         if (method.equals("GET") || method.equals("POST")) {
             File f = new File(".", path);
-            if (!f.getAbsolutePath().contains("..") && f.isFile()) {
+            if (!f.getAbsolutePath().contains("") && f.isFile()) {
                 response(key, f);
             } else {
                 if (server.isDebugEnabled()) {
