@@ -1,7 +1,11 @@
 package org.yukung.sandbox.http;
 
+import static org.yukung.sandbox.http.HttpRequest.*;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -40,10 +44,22 @@ final class IOUtil {
         return new String(buffer, UTF_8);
     }
 
-    private IOUtil() {
-    }
-
     static String toString(byte[] buffer) {
         return new String(buffer, UTF_8);
+    }
+
+    static void println(OutputStream out, String line) {
+        print(out, line + CRLF);
+    }
+
+    static void print(OutputStream out, String line) {
+        try {
+            out.write(line.getBytes(UTF_8));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private IOUtil() {
     }
 }
