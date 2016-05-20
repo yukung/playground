@@ -20,13 +20,26 @@ public class Main {
         ) {
             String line = br.readLine();
             StringBuilder header = new StringBuilder();
+            int contentLength = 0;
 
             while (line != null && !line.isEmpty()) {
+                if (line.startsWith("Content-Length")) {
+                    contentLength = Integer.parseInt(line.split(":")[1].trim());
+                }
                 header.append(line + "\n");
                 line = br.readLine();
             }
 
+            String body = null;
+
+            if (0 < contentLength) {
+                char[] c = new char[contentLength];
+                br.read(c);
+                body = new String(c);
+            }
+
             System.out.println(header);
+            System.out.println(body);
         }
 
         System.out.println("<<< end");
