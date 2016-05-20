@@ -18,7 +18,15 @@ public class Main {
                 Socket socket = ss.accept();
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
         ) {
-            br.lines().forEach(System.out::println);
+            String line = br.readLine();
+            StringBuilder header = new StringBuilder();
+
+            while (line != null && !line.isEmpty()) {
+                header.append(line + "\n");
+                line = br.readLine();
+            }
+
+            System.out.println(header);
         }
 
         System.out.println("<<< end");
