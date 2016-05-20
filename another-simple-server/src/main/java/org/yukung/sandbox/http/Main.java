@@ -1,6 +1,6 @@
 package org.yukung.sandbox.http;
 
-import static org.yukung.sandbox.http.HttpRequest.CRLF;
+import static org.yukung.sandbox.http.HttpRequest.*;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -28,6 +28,9 @@ public class Main {
             System.out.println(request.getBodyText());
 
             bw.write("HTTP/1.1 200 OK" + CRLF);
+            bw.write("Content-Type: text/html" + CRLF);
+            bw.write(CRLF);
+            bw.write("<h1>Hello World!</h1>");
         }
 
         System.out.println("<<< end");
