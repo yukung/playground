@@ -1,7 +1,8 @@
 package org.yukung.sandbox.http;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -11,9 +12,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author yukung
@@ -44,7 +44,7 @@ public class HttpServerTest {
         t.start();
         Thread.yield();
         HttpURLConnection cli =
-            (HttpURLConnection) new URL("http://localhost:" + HttpServer.DEFAULT_PORT + "/test").openConnection();
+                (HttpURLConnection) new URL("http://localhost:" + HttpServer.DEFAULT_PORT + "/test").openConnection();
         assertThat(cli.getResponseCode(), is(HttpURLConnection.HTTP_NOT_FOUND));
         cli.disconnect();
         assertThat(t.isAlive(), is(true));
@@ -65,27 +65,11 @@ public class HttpServerTest {
         t.start();
         Thread.yield();
         HttpURLConnection cli =
-            (HttpURLConnection) new URL("http://localhost:" + HttpServer.DEFAULT_PORT + "/quit").openConnection();
+                (HttpURLConnection) new URL("http://localhost:" + HttpServer.DEFAULT_PORT + "/quit").openConnection();
         assertThat(cli.getResponseCode(), is(HttpURLConnection.HTTP_OK));
         cli.disconnect();
         Thread.sleep(200);
         assertThat(t.isAlive(), is(false));
-    }
-
-    @Test
-    public void testMt() throws Exception {
-        System.setProperty(ClientService.THREAD_TYPE_KEY, ClientService.THREAD_TYPE_MULTI);
-        testService();
-        server.close();
-        server = new HttpServer(HttpServer.DEFAULT_PORT);
-        testServiceExit();
-        server.close();
-        System.setProperty(ClientService.THREAD_TYPE_KEY, ClientService.THREAD_TYPE_POOL);
-        server = new HttpServer(HttpServer.DEFAULT_PORT);
-        testService();
-        server.close();
-        server = new HttpServer(HttpServer.DEFAULT_PORT);
-        testServiceExit();
     }
 
     @Test
@@ -100,7 +84,7 @@ public class HttpServerTest {
         t.start();
         Thread.yield();
         HttpURLConnection cli =
-            (HttpURLConnection) new URL("http://localhost:" + HttpServer.DEFAULT_PORT + "/quit").openConnection();
+                (HttpURLConnection) new URL("http://localhost:" + HttpServer.DEFAULT_PORT + "/quit").openConnection();
         assertThat(cli.getResponseCode(), is(HttpURLConnection.HTTP_UNAUTHORIZED));
         cli.disconnect();
         cli = (HttpURLConnection) new URL("http://localhost:" + HttpServer.DEFAULT_PORT + "/quit").openConnection();
@@ -121,12 +105,12 @@ public class HttpServerTest {
         t.start();
         Thread.yield();
         HttpURLConnection cli =
-            (HttpURLConnection) new URL("http://localhost:" + HttpServer.DEFAULT_PORT + "/quit").openConnection();
+                (HttpURLConnection) new URL("http://localhost:" + HttpServer.DEFAULT_PORT + "/quit").openConnection();
         assertThat(cli.getResponseCode(), is(HttpURLConnection.HTTP_UNAUTHORIZED));
         String challenge = cli.getHeaderField("WWW-Authenticate");
         Matcher m =
-            Pattern.compile("Digest realm=\"(.+?)\",\\s*nonce=\"(.+?)\",\\s*algorithm=MD5,\\s*qop=\"auth\"$",
-                Pattern.CASE_INSENSITIVE).matcher(challenge);
+                Pattern.compile("Digest realm=\"(.+?)\",\\s*nonce=\"(.+?)\",\\s*algorithm=MD5,\\s*qop=\"auth\"$",
+                        Pattern.CASE_INSENSITIVE).matcher(challenge);
         assertThat("unmatched:" + challenge, m.find(), is(true));
         cli.disconnect();
         cli = (HttpURLConnection) new URL("http://localhost:" + HttpServer.DEFAULT_PORT + "/quit").openConnection();
