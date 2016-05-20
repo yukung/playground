@@ -1,25 +1,22 @@
 package org.yukung.sandbox.http;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
-import java.util.stream.Stream;
 
 /**
  * @author yukung
  */
 class HttpRequest {
 
-    private static final String LF = "\n";
-    private final String headerText;
+    public static final String CRLF = "\r\n";
+    private final HttpHeader header;
     private final String bodyText;
 
     HttpRequest(InputStream input) {
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(input, "UTF-8"))) {
-            headerText = readHeader(br);
-            bodyText = readBody(br);
+        try {
+            header = new HttpHeader(input);
+            bodyText = readBody(input);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -27,74 +24,47 @@ class HttpRequest {
     }
 
     String getHeaderText() {
-        return headerText;
+        return header.getText();
     }
 
     String getBodyText() {
         return bodyText;
     }
 
-    private String readHeader(BufferedReader br) throws IOException {
-        String line = br.readLine();
-        StringBuilder header = new StringBuilder();
-
-        while (line != null && !line.isEmpty()) {
-            header.append(line).append("\n");
-            line = br.readLine();
-        }
-
-        return header.toString();
-    }
-
-    private String readBody(BufferedReader br) throws IOException {
-        if (isChunkedTransfer()) {
-            return readBodyByChunkedTransfer(br);
+    private String readBody(InputStream in) throws IOException {
+        if (header.isChunkedTransfer()) {
+            return readBodyByChunkedTransfer(in);
         } else {
-            return readBodyByContentLength(br);
+            return readBodyByContentLength(in);
         }
     }
 
-    private boolean isChunkedTransfer() {
-        return Stream.of(headerText.split(LF))
-                .filter(headerLine -> headerLine.startsWith("Transfer-Encoding"))
-                .map(transferEncoding -> transferEncoding.split(":")[1].trim())
-                .anyMatch("chunked"::equals);
-    }
-
-    private String readBodyByChunkedTransfer(BufferedReader br) throws IOException {
+    private String readBodyByChunkedTransfer(InputStream in) throws IOException {
         StringBuilder body = new StringBuilder();
 
-        int chunkSize = Integer.parseInt(br.readLine(), 16);
+        int chunkSize = Integer.parseInt(IOUtil.readLine(in), 16);
 
         while (chunkSize != 0) {
-            char[] buffer = new char[chunkSize];
-            br.read(buffer);
+            byte[] buffer = new byte[chunkSize];
+            in.read(buffer);
 
-            body.append(buffer);
+            body.append(IOUtil.toString(buffer));
 
-            br.readLine();  // Skip the CRLF at the end of the chunk-body
-            chunkSize = Integer.parseInt(br.readLine(), 16);
+            IOUtil.readLine(in);  // Skip the CRLF at the end of the chunk-body
+            chunkSize = Integer.parseInt(IOUtil.readLine(in), 16);
         }
         return body.toString();
     }
 
-    private String readBodyByContentLength(BufferedReader br) throws IOException {
-        final int contentLength = getContentLength();
+    private String readBodyByContentLength(InputStream in) throws IOException {
+        final int contentLength = header.getContentLength();
 
         if (contentLength <= 0) {
             return null;
         }
-        char[] c = new char[contentLength];
-        br.read(c);
+        byte[] buffer = new byte[contentLength];
+        in.read(buffer);
 
-        return new String(c);
-    }
-
-    private int getContentLength() {
-        return Stream.of(this.headerText.split(LF))
-                .filter(headerLine -> headerLine.startsWith("Content-Length"))
-                .map(contentLengthHeader -> contentLengthHeader.split(":")[1].trim())
-                .mapToInt(Integer::parseInt)
-                .findFirst().orElse(0);
+        return IOUtil.toString(buffer);
     }
 }
