@@ -9,7 +9,7 @@ import java.io.UncheckedIOException;
  */
 class HttpRequest {
 
-    public static final String CRLF = "\r\n";
+    static final String CRLF = "\r\n";
     private final HttpHeader header;
     private final String bodyText;
 

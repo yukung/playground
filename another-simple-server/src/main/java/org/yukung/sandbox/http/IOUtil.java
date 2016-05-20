@@ -10,11 +10,11 @@ import java.util.List;
 /**
  * @author yukung
  */
-public final class IOUtil {
+final class IOUtil {
 
-    public static final Charset UTF_8 = StandardCharsets.UTF_8;
+    private static final Charset UTF_8 = StandardCharsets.UTF_8;
 
-    public static String readLine(InputStream in) throws IOException {
+    static String readLine(InputStream in) throws IOException {
         List<Byte> bytes = new ArrayList<>();
 
         while (true) {

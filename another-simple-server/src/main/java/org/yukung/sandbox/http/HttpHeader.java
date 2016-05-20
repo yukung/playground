@@ -8,29 +8,24 @@ import java.util.Map;
 /**
  * @author Yusuke Ikeda
  */
-public class HttpHeader {
+class HttpHeader {
 
     private final String headerText;
     private Map<String, String> messageHeaders = new HashMap<>();
 
-    public HttpHeader(InputStream in) throws IOException {
-        StringBuilder header = new StringBuilder();
-
-        header.append(readRequestLine(in));
-        header.append(readMessageLine(in));
-
-        this.headerText = header.toString();
+    HttpHeader(InputStream in) throws IOException {
+        this.headerText = readRequestLine(in) + readMessageLine(in);
     }
 
-    public String getText() {
+    String getText() {
         return headerText;
     }
 
-    public int getContentLength() {
+    int getContentLength() {
         return Integer.parseInt(messageHeaders.getOrDefault("Content-Length", "0"));
     }
 
-    public boolean isChunkedTransfer() {
+    boolean isChunkedTransfer() {
         return messageHeaders.getOrDefault("Transfer-Encoding", "-").equals("chunked");
     }
 
@@ -46,7 +41,7 @@ public class HttpHeader {
         while (messageLine != null && !messageLine.isEmpty()) {
             putMessageLine(messageLine);
 
-            sb.append(messageLine + HttpRequest.CRLF);
+            sb.append(messageLine).append(HttpRequest.CRLF);
             messageLine = IOUtil.readLine(in);
         }
         return sb;
