@@ -23,3 +23,7 @@ project('multi-thread') {
 project('io-multiplexing') {
     mainClassName = 'org.yukung.sandbox.http.HttpServer'
 }
+
+project('another-simple-server') {
+    mainClassName = 'org.yukung.sandbox.http.Main'
+}
