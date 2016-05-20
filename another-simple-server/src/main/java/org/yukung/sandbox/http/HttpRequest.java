@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  */
 class HttpRequest {
 
-    private static final String CRLF = "\n";
+    private static final String LF = "\n";
     private final String headerText;
     private final String bodyText;
 
@@ -47,6 +47,38 @@ class HttpRequest {
     }
 
     private String readBody(BufferedReader br) throws IOException {
+        if (isChunkedTransfer()) {
+            return readBodyByChunkedTransfer(br);
+        } else {
+            return readBodyByContentLength(br);
+        }
+    }
+
+    private boolean isChunkedTransfer() {
+        return Stream.of(headerText.split(LF))
+                .filter(headerLine -> headerLine.startsWith("Transfer-Encoding"))
+                .map(transferEncoding -> transferEncoding.split(":")[1].trim())
+                .anyMatch("chunked"::equals);
+    }
+
+    private String readBodyByChunkedTransfer(BufferedReader br) throws IOException {
+        StringBuilder body = new StringBuilder();
+
+        int chunkSize = Integer.parseInt(br.readLine(), 16);
+
+        while (chunkSize != 0) {
+            char[] buffer = new char[chunkSize];
+            br.read(buffer);
+
+            body.append(buffer);
+
+            br.readLine();  // Skip the CRLF at the end of the chunk-body
+            chunkSize = Integer.parseInt(br.readLine(), 16);
+        }
+        return body.toString();
+    }
+
+    private String readBodyByContentLength(BufferedReader br) throws IOException {
         final int contentLength = getContentLength();
 
         if (contentLength <= 0) {
@@ -59,7 +91,7 @@ class HttpRequest {
     }
 
     private int getContentLength() {
-        return Stream.of(this.headerText.split(CRLF))
+        return Stream.of(this.headerText.split(LF))
                 .filter(headerLine -> headerLine.startsWith("Content-Length"))
                 .map(contentLengthHeader -> contentLengthHeader.split(":")[1].trim())
                 .mapToInt(Integer::parseInt)
