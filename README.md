@@ -1,4 +1,4 @@
 # http-server-sample
 
-- master: multi threading for Request/Response.
-- async-io_with_nio: non blocking I/O for Request/Response.
+- multi-thread: multi threading for Request/Response.
+- io-multiplexing: non blocking I/O for Request/Response.
