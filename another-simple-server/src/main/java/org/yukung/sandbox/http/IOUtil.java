@@ -1,7 +1,5 @@
 package org.yukung.sandbox.http;
 
-import static org.yukung.sandbox.http.HttpRequest.*;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -49,7 +47,7 @@ final class IOUtil {
     }
 
     static void println(OutputStream out, String line) {
-        print(out, line + CRLF);
+        print(out, line + Constant.CRLF);
     }
 
     static void print(OutputStream out, String line) {

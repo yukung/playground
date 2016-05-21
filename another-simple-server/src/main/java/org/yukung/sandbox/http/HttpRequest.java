@@ -9,7 +9,6 @@ import java.io.UncheckedIOException;
  */
 class HttpRequest {
 
-    static final String CRLF = "\r\n";
     private final HttpHeader header;
     private final String bodyText;
 
@@ -25,6 +24,10 @@ class HttpRequest {
 
     String getHeaderText() {
         return header.getText();
+    }
+
+    HttpHeader getHeader() {
+        return header;
     }
 
     String getBodyText() {

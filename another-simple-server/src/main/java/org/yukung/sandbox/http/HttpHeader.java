@@ -5,11 +5,15 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.yukung.sandbox.http.Constant.*;
+
 /**
  * @author Yusuke Ikeda
  */
 class HttpHeader {
 
+    private HttpMethod method;
+    private String path;
     private final String headerText;
     private Map<String, String> messageHeaders = new HashMap<>();
 
@@ -29,8 +33,20 @@ class HttpHeader {
         return messageHeaders.getOrDefault("Transfer-Encoding", "-").equals("chunked");
     }
 
+    boolean isGetMethod() {
+        return method == HttpMethod.GET;
+    }
+
+    String getPath() {
+        return path;
+    }
+
     private String readRequestLine(InputStream in) throws IOException {
-        return IOUtil.readLine(in) + HttpRequest.CRLF;
+        String requestLine = IOUtil.readLine(in);
+        String[] tmp = requestLine.split(" ");
+        method = HttpMethod.valueOf(tmp[0].toUpperCase());
+        path = tmp[1];
+        return requestLine + CRLF;
     }
 
     private StringBuilder readMessageLine(InputStream in) throws IOException {
@@ -41,7 +57,7 @@ class HttpHeader {
         while (messageLine != null && !messageLine.isEmpty()) {
             putMessageLine(messageLine);
 
-            sb.append(messageLine).append(HttpRequest.CRLF);
+            sb.append(messageLine).append(CRLF);
             messageLine = IOUtil.readLine(in);
         }
         return sb;

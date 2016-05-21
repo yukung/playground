@@ -1,12 +1,13 @@
 package org.yukung.sandbox.http;
 
-import static java.lang.System.*;
-
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import static java.lang.System.*;
 
 /**
  * @author yukung
@@ -22,13 +23,12 @@ public class Main {
             OutputStream out = socket.getOutputStream()
         ) {
             HttpRequest request = new HttpRequest(in);
-
-            System.out.println(request.getHeaderText());
-            System.out.println(request.getBodyText());
-
             HttpResponse response = new HttpResponse(HttpStatus.OK);
-            response.addHeader("Content-Type", ContentType.TEXT_HTML);
-            response.setBody("<h1>Hello World!!</h1>");
+            HttpHeader header = request.getHeader();
+
+            if (header.isGetMethod()) {
+                response.setBody(new File(".", header.getPath()));
+            }
 
             response.writeTo(out);
         }
