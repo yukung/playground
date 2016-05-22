@@ -27,12 +27,35 @@ public class Main {
             HttpHeader header = request.getHeader();
 
             if (header.isGetMethod()) {
-                response.setBody(new File(".", header.getPath()));
+                File file = new File(".", header.getPath());
+                if (file.exists() && file.isFile()) {
+                    respondLocalFile(file, out);
+                } else {
+                    respondNotFoundError(out);
+                }
+            } else {
+                respondOk(out);
             }
-
-            response.writeTo(out);
         }
 
         out.println("<<< end");
+    }
+
+    private static void respondOk(OutputStream out) throws IOException {
+        HttpResponse response = new HttpResponse(HttpStatus.OK);
+        response.writeTo(out);
+    }
+
+    private static void respondNotFoundError(OutputStream out) throws IOException {
+        HttpResponse response = new HttpResponse(HttpStatus.NOT_FOUND);
+        response.addHeader("Content-Type", ContentType.TEXT_PLAIN);
+        response.setBody("404 Not Found");
+        response.writeTo(out);
+    }
+
+    private static void respondLocalFile(File file, OutputStream out) throws IOException {
+        HttpResponse response = new HttpResponse(HttpStatus.OK);
+        response.setBody(file);
+        response.writeTo(out);
     }
 }

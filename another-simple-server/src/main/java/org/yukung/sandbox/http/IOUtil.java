@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.yukung.sandbox.http.Constant.CRLF;
+
 /**
  * @author yukung
  */
@@ -47,7 +49,7 @@ final class IOUtil {
     }
 
     static void println(OutputStream out, String line) {
-        print(out, line + Constant.CRLF);
+        print(out, line + CRLF);
     }
 
     static void print(OutputStream out, String line) {

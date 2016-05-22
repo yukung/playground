@@ -4,12 +4,12 @@ package org.yukung.sandbox.http;
  * @author yukung
  */
 enum HttpStatus {
-    OK("200 OK")
-    ;
+    OK("200 OK"),
+    NOT_FOUND("404 Not Found");
 
     private final String text;
 
-    private HttpStatus(String text) {
+    HttpStatus(String text) {
         this.text = text;
     }
 
