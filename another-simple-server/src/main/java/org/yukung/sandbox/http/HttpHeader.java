@@ -1,11 +1,12 @@
 package org.yukung.sandbox.http;
 
+import static org.yukung.sandbox.http.Constant.*;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.yukung.sandbox.http.Constant.*;
 
 /**
  * @author Yusuke Ikeda
@@ -45,7 +46,7 @@ class HttpHeader {
         String requestLine = IOUtil.readLine(in);
         String[] tmp = requestLine.split(" ");
         method = HttpMethod.valueOf(tmp[0].toUpperCase());
-        path = tmp[1];
+        path = URLDecoder.decode(tmp[1], "UTF-8");
         return requestLine + CRLF;
     }
 
