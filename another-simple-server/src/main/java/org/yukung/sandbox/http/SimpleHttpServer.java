@@ -4,10 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 class SimpleHttpServer {
+
+    private ExecutorService service = Executors.newCachedThreadPool();
 
     void start() {
         try (ServerSocket server = new ServerSocket(8080)) {
@@ -21,27 +26,38 @@ class SimpleHttpServer {
     }
 
     private void serverProcess(ServerSocket server) throws IOException {
-        try (
-            Socket socket = server.accept();
-            InputStream in = socket.getInputStream();
-            OutputStream out = socket.getOutputStream()
-        ) {
-            HttpRequest request = new HttpRequest(in);
-            HttpHeader header = request.getHeader();
+        Socket socket = server.accept();
 
-            if (header.isGetMethod()) {
-                File file = new File(".", header.getPath());
-                if (file.exists() && file.isFile()) {
-                    respondLocalFile(file, out);
+        service.execute(() -> {
+            try (
+                InputStream in = socket.getInputStream();
+                OutputStream out = socket.getOutputStream()
+            ) {
+                HttpRequest request = new HttpRequest(in);
+                HttpHeader header = request.getHeader();
+
+                if (header.isGetMethod()) {
+                    File file = new File(".", header.getPath());
+                    if (file.exists() && file.isFile()) {
+                        respondLocalFile(file, out);
+                    } else {
+                        respondNotFoundError(out);
+                    }
                 } else {
-                    respondNotFoundError(out);
+                    respondOk(out);
                 }
-            } else {
-                respondOk(out);
+            } catch (EmptyRequestException e) {
+                e.printStackTrace(System.err);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            } finally {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (EmptyRequestException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     private static void respondOk(OutputStream out) throws IOException {
