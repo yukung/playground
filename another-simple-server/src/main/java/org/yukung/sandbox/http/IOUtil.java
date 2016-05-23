@@ -2,6 +2,7 @@ package org.yukung.sandbox.http;
 
 import static org.yukung.sandbox.http.Constant.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -47,6 +48,10 @@ final class IOUtil {
         }
 
         return new String(buffer, UTF_8);
+    }
+
+    static InputStream toInputStream(String string) {
+        return new ByteArrayInputStream(string.getBytes(UTF_8));
     }
 
     static String toString(byte[] buffer) {
