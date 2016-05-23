@@ -1,5 +1,7 @@
 package org.yukung.sandbox.http;
 
+import static org.yukung.sandbox.http.Constant.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -8,8 +10,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.yukung.sandbox.http.Constant.CRLF;
 
 /**
  * @author yukung
@@ -23,6 +23,11 @@ final class IOUtil {
 
         while (true) {
             byte b = (byte) in.read();
+
+            if (b == -1) {
+                throw new EmptyRequestException();
+            }
+
             bytes.add(b);
 
             int size = bytes.size();

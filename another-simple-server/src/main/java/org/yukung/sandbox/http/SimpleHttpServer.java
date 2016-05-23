@@ -7,9 +7,9 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class SimpleHttpServer {
+class SimpleHttpServer {
 
-    public void start() {
+    void start() {
         try (ServerSocket server = new ServerSocket(8080)) {
             while (true) {
                 this.serverProcess(server);
@@ -39,6 +39,8 @@ public class SimpleHttpServer {
             } else {
                 respondOk(out);
             }
+        } catch (EmptyRequestException e) {
+            e.printStackTrace();
         }
     }
 
