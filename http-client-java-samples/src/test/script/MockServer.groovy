@@ -8,17 +8,17 @@ class SimpleHttpHandler implements HttpHandler {
     void handle(HttpExchange httpExchange) throws IOException {
         try {
             def builder = new StringBuilder()
-            builder << "Accessed URL = ${httpExchange.requestURI}" << System.properties['line.separator']
-            builder << "Accessed Method = ${httpExchange.requestMethod}" << System.properties['line.separator']
-            builder << "Accessed Date = ${new Date()}" << System.properties['line.separator']
+            builder << "Accessed URL = ${httpExchange.requestURI}" << "\r\n"
+            builder << "Accessed Method = ${httpExchange.requestMethod}" << "\r\n"
+            builder << "Accessed Date = ${new Date()}" << "\r\n"
 
             switch (httpExchange.requestMethod) {
                 case "GET":
                     break
                 case "POST":
-                    builder << "Request Body<<" << System.properties['line.separator']
+                    builder << "Request Body<<" << "\r\n"
                     builder << httpExchange.requestBody.getText("UTF-8")
-                    builder << ">>" << System.properties['line.separator']
+                    builder << ">>" << "\r\n"
             }
 
             def bytes = builder.toString().getBytes("UTF-8")
