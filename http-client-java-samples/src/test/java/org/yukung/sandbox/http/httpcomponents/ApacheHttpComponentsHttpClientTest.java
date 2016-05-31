@@ -48,4 +48,31 @@ public class ApacheHttpComponentsHttpClientTest {
                 "Hello Http Server!",
                 ">>");
     }
+
+    @Test
+    public void getByFluentAPI() throws Exception {
+        HttpClient client = new FluentApacheHttpComponentsHttpClient();
+        String response = client.get("http://localhost:8080/get?param=value");
+        assertThat(response).contains(
+                "Accessed URL = /get?param=value",
+                "Accessed Method = GET",
+                "Accessed Date = ");
+    }
+
+    @Test
+    public void postByFluentAPI() throws Exception {
+        HttpClient client = new FluentApacheHttpComponentsHttpClient();
+        String body = "POST Body" + "\r\n" +
+                "Hello Http Server!" + "\r\n";
+
+        String response = client.post("http://localhost:8080/post", body);
+        assertThat(response).contains(
+                "Accessed URL = /post",
+                "Accessed Method = POST",
+                "Accessed Date =",
+                "Request Body<<",
+                "POST Body",
+                "Hello Http Server!",
+                ">>");
+    }
 }
