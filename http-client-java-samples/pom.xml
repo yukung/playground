@@ -13,13 +13,14 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>jboss-public-repository</id>
-            <name>JBoss Public Repository Group</name>
-            <url>http://repository.jboss.org/nexus/content/groups/public-jboss</url>
-        </repository>
-    </repositories>
+    <!-- for RestEasy -->
+    <!--<repositories>-->
+    <!--<repository>-->
+    <!--<id>jboss-public-repository</id>-->
+    <!--<name>JBoss Public Repository Group</name>-->
+    <!--<url>http://repository.jboss.org/nexus/content/groups/public-jboss</url>-->
+    <!--</repository>-->
+    <!--</repositories>-->
 
     <dependencies>
         <dependency>
@@ -71,6 +72,11 @@
             <!--<artifactId>resteasy-client</artifactId>-->
             <!--<version>3.0.17.Final</version>-->
         <!--</dependency>-->
+        <dependency>
+            <groupId>org.asynchttpclient</groupId>
+            <artifactId>async-http-client</artifactId>
+            <version>2.0.3</version>
+        </dependency>
         <!-- For test-->
         <dependency>
             <groupId>junit</groupId>
