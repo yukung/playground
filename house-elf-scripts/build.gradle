@@ -1,0 +1,69 @@
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'java-library-distribution'
+apply from: 'http://tellurianring.com/projects/gradle-plugins/gradle-release/apply.groovy'
+
+group = 'org.yukung'
+
+sourceCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    deployJars
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.2.2'
+    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+	compile 'org.slf4j:slf4j-api:1.7.7'
+	compile 'org.slf4j:jcl-over-slf4j:1.7.7'
+	compile 'ch.qos.logback:logback-classic:1.1.2'
+	compile 'ch.qos.logback:logback-core:1.1.2'
+    compile('org.apache.xmlrpc:xmlrpc-client:3.1.3') {
+        exclude module: 'junit'
+    }
+    compile('org.codehaus.groovy.modules.http-builder:http-builder:0.7.1') {
+		exclude module: 'commons-logging'
+	}
+    deployJars 'org.apache.maven.wagon:wagon-webdav-jackrabbit:2.6'
+}
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+processResources {
+    ext {
+        backlogPassword = project.hasProperty('backlogPassword') ? project.backlogPassword : ''
+        clientId = project.hasProperty('clientId') ? project.clientId : ''
+        clientSecret = project.hasProperty('clientSecret') ? project.clientSecret : ''
+    }
+    filter(ReplaceTokens, tokens: [password: backlogPassword, clientId: clientId, clientSecret: clientSecret])
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            ext {
+                configureAuth = {
+                    authentication(userName: 'ikeda-yusuke', password: project.password)
+                }
+            }
+            configuration = configurations.deployJars
+            // repository(url: "file:${System.getProperty('user.home')}/.m2/repository")
+            snapshotRepository(url: 'dav:https://repository-yusukei.forge.cloudbees.com/snapshot/', configureAuth)
+            repository(url: 'dav:https://repository-yusukei.forge.cloudbees.com/release/', configureAuth)
+        }
+    }
+}
+
+createReleaseTag.dependsOn uploadArchives
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}

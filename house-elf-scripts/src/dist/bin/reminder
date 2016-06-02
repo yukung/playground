@@ -1,0 +1,81 @@
+#!/bin/bash
+//usr/bin/env groovy -cp .:../*:../lib/* "$0" $@; exit $?
+import intec.iwstudy.backlog.BacklogAPIClient
+import intec.iwstudy.typetalk.TypetalkAPIClient
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
+// ログ設定
+log = LoggerFactory.getLogger(getClass())
+// 設定取得
+conf = new ConfigSlurper().parse new File('../conf/config.groovy').toURL()
+auth = new ConfigSlurper().parse getClass().classLoader.getResource('authentication.groovy')
+
+// Backlog から情報を取得
+contents = retrieveFromBacklog(auth)
+
+if (!contents
+        || !contents.milestones
+        || !contents.milestones[0]
+        || !contents.milestones[0].date
+        || !contents.milestones[0].date[0]) {
+    log.info('Milestone has not been set.')
+    System.exit(0)
+}
+// 開催期日がしきい値に近づいているかを判定
+dueDate = contents.milestones[0].date[0]
+
+import java.text.SimpleDateFormat
+
+parsedDueDate = new SimpleDateFormat('yyyyMMdd').parse dueDate
+def now = Calendar.getInstance()
+def threshold = Calendar.getInstance()
+threshold.time = parsedDueDate
+threshold.add(Calendar.DATE, -conf.reminder.thresholdOfApproachingDueDate)
+def deadline = Calendar.getInstance()
+deadline.time = parsedDueDate
+if (now.before(threshold)) {
+// まだ余裕がある場合は、通知間隔を判定
+    def interval = threshold.time - now.time
+    // interval が設定間隔を過ぎていない場合は通知をキャンセル
+    if (!(interval % conf.reminder.notificationInterval)) {
+        log.info('It is {} days left until the date of the notice.', interval)
+        System.exit(0)
+    }
+} else if (now.after(deadline)) {
+    log.info('There is no notification which is scheduled.')
+    System.exit(0)
+}
+// 通知内容を編集
+dueDate = new SimpleDateFormat('yyyy年M月d日（E）').format deadline.time
+text = """
+【業務連絡】
+次回 ${contents.milestones[0].name[0]} のリマインドだよ！
+
+日時： $dueDate
+テーマ： ${contents.summary[0]}
+詳細： ${contents.description[0]}
+"""
+log.info(text)
+
+postToTypetalk(auth, text)
+
+def retrieveFromBacklog(auth) {
+    def backlog = new BacklogAPIClient('https://intec.backlog.jp/XML-RPC',
+            auth.provider.backlog.username,
+            auth.provider.backlog.password)
+    def project = backlog.getProject 'IWSTUDY'
+    def categoryId = backlog.getComponents(project.id).find { it.name == 'お題' }.id
+    backlog.findIssue projectId: project.id, componentId: categoryId, statusId: 2, sort: 'DUE_DATE', order: 0, limit: 1
+}
+
+def postToTypetalk(auth, text) {
+    def typetalk = new TypetalkAPIClient(
+            auth.provider.typetalk.clientId,
+            auth.provider.typetalk.clientSecret,
+            'topic.read,topic.post'
+    )
+    members = typetalk.listTopicMembers(topicId: 5008).accounts.collect { "@${it.account.name}" }
+    typetalk.postTopic(topicId: 5008, message: "${members.join('\n')}$text")
+}
+
