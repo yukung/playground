@@ -1,0 +1,5 @@
+[*.java]
+insert_final_newline = true
+
+[*.gradle]
+insert_final_newline = true
