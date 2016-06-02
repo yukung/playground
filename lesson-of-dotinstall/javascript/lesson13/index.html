@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>JavaScriptの練習</title>
+</head>
+<body>
+	<script>
+		/*
+			関数: 複数の処理
+
+			function 関数名(引数) {
+				処理
+				return 返り値
+			}
+		*/
+
+		/*
+		function hello(name) {
+			var msg = "hello " + name // ローカル変数
+			return msg;
+		}
+		*/
+		var hello = function(name) {	// 無名関数、匿名関数
+			var msg = "hello " + name // ローカル変数
+			return msg;
+		}
+		var greet = hello("Tom");
+		console.log(greet);
+		// console.log(msg);
+	</script>
+</body>
+</html>

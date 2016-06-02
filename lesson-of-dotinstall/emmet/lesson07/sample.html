@@ -1,0 +1,40 @@
+filter
+
+|e
+
+<pre>
+html>body>#main|e
+&lt;html&gt;
+&lt;body&gt;
+	&lt;div id="main"&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+|c
+
+#main>.sub>p*3|c
+<div id="main">
+	<div class="sub">
+		<p></p>
+		<p></p>
+		<p></p>
+	</div>
+	<!-- /.sub -->
+</div>
+<!-- /#main -->
+
+|s
+
+ul>li*3|s
+<ul><li></li><li></li><li></li></ul>
+
+|haml
+
+html>body>#main>p*3|haml
+%html
+%body
+	#main
+		%p
+		%p
+		%p

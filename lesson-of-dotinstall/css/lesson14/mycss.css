@@ -1,0 +1,15 @@
+p {
+    font-size: 14px;
+}
+
+a {
+    display: inline;
+}
+
+li {
+    display: inline;
+}
+
+p {
+    display: none;
+}

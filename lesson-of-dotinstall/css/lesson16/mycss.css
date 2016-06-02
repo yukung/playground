@@ -1,0 +1,21 @@
+p {
+    font-size: 14px;
+}
+
+/* 
+
+a, b
+a b 
+a>b
+ab
+
+*/
+
+#greet > .person {
+    color: red;
+}
+
+span.person {
+    color: blue;
+}
+

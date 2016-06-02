@@ -1,0 +1,27 @@
+p {
+    font-size: 14px;
+}
+
+/* 
+
+セレクタの優先順位
+
+1. 後から書いたほうが優先される
+2. id > class
+3. 詳細に指定したほうが優先される
+4. !important
+
+
+*/
+
+p#id1 {
+    color: yellow;
+}
+
+#id1 {
+    color: red !important;
+}
+
+
+
+

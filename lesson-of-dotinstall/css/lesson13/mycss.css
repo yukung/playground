@@ -1,0 +1,16 @@
+p {
+    font-size: 14px;
+}
+
+ul {
+    list-style-type: square; /* circle; none; */
+}
+
+ol {
+    list-style-type: hiragana; /* lower-alpha; */
+}
+
+ul {
+    list-style-position: inside;
+}
+

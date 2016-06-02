@@ -1,0 +1,17 @@
+p {
+    font-size: 14px;
+}
+
+/*
+余白
+padding:内側の余白
+margin:外側の余白
+*/
+
+#box1 {
+    background-color: red;
+    border: black 4px solid;
+    
+    padding: 40px 100px 200px 5px;
+    margin: 40px;
+}

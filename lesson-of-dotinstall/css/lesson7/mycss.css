@@ -1,0 +1,12 @@
+p {
+    font-size: 14px;
+}
+
+body {
+    background-color: red;
+    background-image: url('http://samples.dotinstall.com/basic_css/107/bg.png');
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-attachment: fixed;
+    background: url('http://samples.dotinstall.com/basic_css/107/bg.png') no-repeat top right;
+}

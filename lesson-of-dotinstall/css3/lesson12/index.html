@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>CSS3の勉強</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            padding: 10px;
+            margin: 30px;
+            background-color:orange;
+            border:2px solid orangered;
+            -webkit-transition-property:all;
+            -webkit-transition-duration:1s;
+            -webkit-transition-timing-function:ease;
+            /* linear, ease-in, ease-out, ease-in-out */
+            -webkit-transition-delay:2s;
+            /* -webkit-transition: all 1s ease 2s; */
+        }
+        div:hover {
+            height: 200px;
+            background-color:red;
+        }
+    </style>
+</head>
+<body>
+    <div id="test1">test1</div>
+</body>
+</html>
+

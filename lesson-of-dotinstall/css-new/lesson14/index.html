@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>CSSの練習</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        div {
+            background: green;
+            width: 100px;
+            height: 100px;
+            position: relative;
+            z-index: 1;
+        }
+        .label {
+            position: absolute;
+            /* top right left bottom */
+            bottom: -5px;
+            right: -5px;
+            font-size: 14px;
+            background: red;
+            padding: 2px 4px;
+            color: white;
+        }
+        div#menu {
+            position: fixed;
+            top: 0;
+            background: blue;
+            color: white;
+            width: 100%;
+            height: 50px;
+            z-index: 2;
+        }
+        /*
+        position
+        - static
+        - relative 親要素
+        - absolute 子要素
+        - fixed
+
+        z-index
+        - 数値が大きいほど↑
+        */
+    </style>
+</head>
+<body>
+    <div id="menu">Menu</div>
+    <div>
+        <span class="label">NEW!!</span>
+        Box
+    </div>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+    <p>こんにちは。</p>
+</body>
+</html>

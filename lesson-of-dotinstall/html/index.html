@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>はじめてのHTML</title>
+</head>
+<body>
+    <!--
+    div: 汎用ブロック要素 → 前後に改行が入る
+    span: 汎用インライン要素 → 入らない
+
+    id:文書の中にその要素が一つだけあるもの
+    class:文書の中に複数あるもの
+    -->
+    <h1>大見出し</h1>
+    <p>こんにちは！こんにちは！<span class="point">こんにちは！</span>こんにちは！</p>
+    <p style="color:red;border:1px solid #f00">こんにちは！</p>
+    <p>pタグは&lt;p&gt;と書きます。</p>
+    
+    <div id="main">
+    <p>こんにちは！</p>
+    <p>こんにちは！<span class="point">こんにちは！</span></p>
+    <p>こんにちは！</p>
+    </div>
+    <p>Google検索は<a href="http://google.com" target="_blank">こちらから</a></p>
+    <a href="http://google.com" target="_blank"><img src="http://samples.dotinstall.com/basic_html/306/omlet.jpeg" width="180" height="240" alt="オムレツの画像です。"></a>
+    <p>別のページは<a href="other.html">こちら</a>！</p>
+    <h2>美味しいオムレツの特徴</h2>
+    <ul>
+        <li>うまい！</li>
+        <li>やすい！</li>
+        <li>ふんわり！</li>
+    </ul>
+    <ol>
+        <li>うまい！</li>
+        <li>やすい！</li>
+        <li>ふんわり！</li>
+    </ol>
+    <!-- 箇条書き：Unordered List, 番号付きリスト：Orderd List, List Item -->
+    <h2>営業データ</h2>
+    <table>
+        <tr>
+            <th>部署名</th><th>2010年</th><th>2011年</th><th>2012年</th>
+        </tr>
+        <tr>
+            <th>営業1課</td><td>200</td><td>210</td><td>230</td>
+        </tr>
+        <tr>
+            <th>営業2課</td><td>400</td><td>240</td><td>380</td>
+        </tr>
+    </table>
+    <h1>お問い合せフォーム</h1>
+    <form action="contact.php" method="post" enctype="multipart/form-data">
+        <p>お名前：<input type="text" name="name" size="20" maxlength="5" value="田中"></p>
+        <p>パスワード：<input type="password" name="password" size="20" maxlength="5" value="12345"></p>
+        <p>メモ：<textarea name="memo" rows="5" cols="40">メモ</textarea></p>
+        <p>ケータイ：
+            <label><input type="checkbox" name="mobile" value="1" checked>iPhone</label>
+            <label><input type="checkbox" name="mobile" value="2">Android</label>
+            <label><input type="checkbox" name="mobile" value="3">その他</label>
+        </p>
+        <p>性別：
+            <input type="radio" name="sex" value="1" id="male" checked><label for="male">男性</label>
+            <input type="radio" name="sex" value="2" id="female"><label for="female">女性</label>
+            <input type="radio" name="sex" value="3" id="other"><label for="other">その他</label>
+        </p>
+        <p>言語：
+            <select name="language" size="4" multiple>
+                <option value="ja">日本語</option>
+                <option value="en">英語</option>
+                <option value="fr">フランス語</option>
+                <option value="sp">スペイン語</option>
+                <option value="th" selected>タイ語</option>
+                <option value="kr">韓国語</option>
+            </select>
+        </p>
+        <p>写真：<input type="file" name="picture"></p>
+        <input type="hidden" name="user_id" value="55203438">
+        <p><input type="submit" value="送信！"></p>
+    </form>
+        <p><input type="button" value="汎用ボタン"></p>
+</body>
+</body>
+</html>

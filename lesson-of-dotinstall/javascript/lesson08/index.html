@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>JavaScriptの練習</title>
+</head>
+<body>
+	<script>
+		/*
+			条件分岐
+			switch
+		*/
+		var signal = "blue";
+		switch (signal) {
+			case "red":
+				console.log("stop!");
+				break;
+			case "green":
+			case "blue":
+				console.log("go!");
+				break;
+			case "yellow":
+				console.log("slow down!");
+				break;
+			default:
+				console.log("wrong signal");
+				break;
+		}
+	</script>
+</body>
+</html>

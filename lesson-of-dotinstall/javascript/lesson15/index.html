@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>JavaScriptの練習</title>
+</head>
+<body>
+	<script>
+		/*
+			タイマー処理
+				setInterval	-> 処理が完了したかどうかを考慮しないので、オーバーフローする可能性がある
+				setTimeout -> 処理が完了したかどうかを考慮する
+		*/
+		var i = 0;
+		function show() {
+			console.log(i++);
+			var tid = setTimeout(function() {
+				show();
+			}, 1000);
+			if (i > 3) {
+				clearTimeout(tid);
+			}
+		}
+		show();
+	</script>
+</body>
+</html>

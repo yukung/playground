@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>CSS3の勉強</title>
+    <style>
+        /*
+        a[href="http://dotinstall.com"] {
+            color: yellow;
+        }
+        a[href^="http"] {
+            color: yellow;
+        }
+        a[href$="jp"] {
+            color: yellow;
+        }
+        */
+        a[href*="dotinstall"] {
+            color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <h1>リンク集</h1>
+    <ul>
+    <li><a href="http://dotinstall.com">dotinstall.com</a></li>
+    <li><a href="http://google.com">Google</a></li>
+    <li><a href="http://yahoo.co.jp">Yahoo!</a></li>
+    <li><a href="mailto:taguchi@dotinstall.com">mail me!</a></li>
+    </ul>
+</body>
+</html>
+
