@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright (C) 2014 Yusuke Ikeda <yukung.i@gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<!-- TODO 全体的に xml が fat になってきたら分割を考える -->
+	<context:component-scan
+		base-package="intec.sli.iwstudy.teamcalendar.domain, intec.sli.iwstudy.teamcalendar.infrastructure" />
+
+	<!-- application -->
+	<!-- Definition for DXO using Dozer -->
+	<bean class="org.dozer.spring.DozerBeanMapperFactoryBean">
+		<property name="mappingFiles" value="classpath:dozer/event-mapping.xml" />
+	</bean>
+	<!-- <bean class="intec.sli.iwstudy.teamcalendar.app.web.service.CustomEventsManager" autowire="constructor" />  -->
+
+	<!-- domain -->
+	<!-- Declarative transaction management by annotation-driven. -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- infrastructure -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- Definition for using MyBatis-Spring -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+	</bean>
+
+	<!-- Definition the Mapper Interface of MyBatis -->
+	<!-- TODO ここは Mapper が増えてきたらパッケージスキャンに変える -->
+	<bean id="eventMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="intec.sli.iwstudy.teamcalendar.infrastructure.mybatis.EventMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<!-- environment -->
+	<beans profile="development">
+		<!-- TODO 実データベース使う場合は、jdbc.properties から datasource を構成するように切り出し -->
+		<!-- TODO ServletListener にフックして、H2 Database を Server mode で起動するように変更 -->
+		<jdbc:embedded-database id="dataSource" type="H2">
+			<jdbc:script location="classpath:script/schema.ddl" />
+			<jdbc:script location="classpath:script/initialize.sql" />
+		</jdbc:embedded-database>
+	</beans>
+
+</beans>
