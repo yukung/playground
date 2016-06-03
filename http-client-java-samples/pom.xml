@@ -82,6 +82,11 @@
             <artifactId>google-http-client</artifactId>
             <version>1.22.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-client</artifactId>
+            <version>9.3.9.v20160517</version>
+        </dependency>
         <!-- For test-->
         <dependency>
             <groupId>junit</groupId>
