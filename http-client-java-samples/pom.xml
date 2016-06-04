@@ -87,6 +87,11 @@
             <artifactId>jetty-client</artifactId>
             <version>9.3.9.v20160517</version>
         </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.3.1</version>
+        </dependency>
         <!-- For test-->
         <dependency>
             <groupId>junit</groupId>
