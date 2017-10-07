@@ -38,7 +38,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test "login with remembering" do
     log_in_as(@user, remember_me: '1')
-    assert_not_empty cookies['remember_token'] # test 内ではコントローラのインスタンス変数にはアクセス出来ないので cookies メソッドにシンボルは使えない
+    assert_equal cookies['remember_token'], assigns(:user).remember_token # assigns を使うとコントローラのインスタンス変数にアクセスできる
   end
 
   test "login without remembering" do
