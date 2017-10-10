@@ -17,5 +17,6 @@ class UsersEditTest < ActionDispatch::IntegrationTest
       }
     }
     assert_template 'users/edit'
+    assert_select "div.alert", "The form contains 4 errors."
   end
 end
