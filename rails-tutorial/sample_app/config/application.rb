@@ -11,5 +11,9 @@ module SampleApp
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+
+    # To Avoid the "uninitialized constant #{model}::#{uploader_class_name} caused by Carrierwave.
+    # See: https://github.com/carrierwaveuploader/carrierwave/issues/399#issuecomment-51422423
+    config.autoload_paths += Dir[Rails.root.join('app', 'uploaders')]
   end
 end
