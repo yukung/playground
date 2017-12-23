@@ -1,0 +1,11 @@
+<% provide(:title, 'All users') %>
+<h1>All users</h1>
+
+<%= will_paginate %>
+
+<ul class="users">
+  <%# @users を User オブジェクトのリストと推論し、 User のコレクションを列挙し _user パーシャルで出力される %>
+  <%= render @users %>
+</ul>
+
+<%= will_paginate %>
